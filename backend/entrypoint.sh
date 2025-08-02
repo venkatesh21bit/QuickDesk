@@ -12,4 +12,4 @@ echo "Creating superuser..."
 python manage.py shell < create_superuser.py || echo "Superuser creation skipped (may already exist)"
 
 echo "Starting gunicorn..."
-exec gunicorn main.wsgi:application --bind 0.0.0.0:$PORT
+exec gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
