@@ -125,31 +125,34 @@ export default function AdminDashboard() {
 
   if (authLoading || loading) {
     return (
-      <div className="container mx-auto py-8">
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Loading admin dashboard...</span>
+      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+        <div className="container mx-auto py-8">
+          <div className="flex items-center justify-center h-64">
+            <Loader2 className="h-8 w-8 animate-spin text-white" />
+            <span className="ml-2 text-white">Loading admin dashboard...</span>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+      <div className="container mx-auto py-8 space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold tracking-tight text-white">Admin Dashboard</h1>
+          <p className="text-white/70">
             System administration and management overview.
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="border-white/30 text-white hover:bg-white/10">
             <Settings className="h-4 w-4 mr-2" />
             System Settings
           </Button>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="border-white/30 text-white hover:bg-white/10">
             <BarChart3 className="h-4 w-4 mr-2" />
             Reports
           </Button>
@@ -421,6 +424,7 @@ export default function AdminDashboard() {
           </Card>
         </div>
       )}
+      </div>
     </div>
   )
 }

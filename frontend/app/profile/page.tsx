@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
+import { useState, useEffect, Suspense } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
 import { User, Mail, Phone, Building, MapPin, Clock, Save, Eye, EyeOff, Shield } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -13,9 +13,11 @@ import { api } from "@/lib/api"
 import { AuthGuard } from "@/components/auth-guard"
 import { MainHeader } from "@/components/main-header"
 
-export default function ProfilePage() {
+function ProfilePageContent() {
   const { user, updateProfile, isLoading } = useAuth()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const [activeTab, setActiveTab] = useState("profile")
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -60,6 +62,16 @@ export default function ProfilePage() {
       })
     }
   }, [user, isLoading, router])
+
+  // Handle tab parameter from URL
+  useEffect(() => {
+    const tab = searchParams.get('tab')
+    if (tab === 'settings') {
+      setActiveTab('settings')
+    } else {
+      setActiveTab('profile')
+    }
+  }, [searchParams])
 
   const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -175,6 +187,32 @@ export default function ProfilePage() {
             </p>
           </div>
 
+          {/* Tab Navigation */}
+          <div className="flex justify-center">
+            <div className="flex space-x-1 bg-white/10 rounded-lg p-1 backdrop-blur-md">
+              <button 
+                className={`px-6 py-2 text-sm font-medium rounded-md transition-colors ${
+                  activeTab === "profile" 
+                    ? "bg-white text-[#ff4e50] shadow-md" 
+                    : "text-white hover:text-[#f9d423]"
+                }`}
+                onClick={() => setActiveTab("profile")}
+              >
+                Profile Information
+              </button>
+              <button 
+                className={`px-6 py-2 text-sm font-medium rounded-md transition-colors ${
+                  activeTab === "settings" 
+                    ? "bg-white text-[#ff4e50] shadow-md" 
+                    : "text-white hover:text-[#f9d423]"
+                }`}
+                onClick={() => setActiveTab("settings")}
+              >
+                Account Settings
+              </button>
+            </div>
+          </div>
+
           {/* Messages */}
           {message && (
             <Card className="backdrop-blur-md bg-green-500/20 border-green-400/30 shadow-xl">
@@ -192,6 +230,8 @@ export default function ProfilePage() {
             </Card>
           )}
 
+          {/* Tab Content */}
+          {activeTab === "profile" && (
           <div className="grid gap-8 lg:grid-cols-2">
             {/* Profile Information */}
             <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
@@ -424,31 +464,99 @@ export default function ProfilePage() {
               </CardContent>
             </Card>
           </div>
+          )}
 
-          {/* Account Information */}
-          <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
-            <CardHeader>
-              <CardTitle className="text-white">Account Information</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center p-4 bg-white/10 rounded-lg border border-white/20">
-                  <div className="text-2xl font-bold text-white">{user.role.toUpperCase()}</div>
-                  <div className="text-white/70">Account Role</div>
+          {/* Settings Tab Content */}
+          {activeTab === "settings" && (
+          <div className="space-y-8">
+            {/* Account Information */}
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+              <CardHeader>
+                <CardTitle className="text-white">Account Information</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="text-center p-4 bg-white/10 rounded-lg border border-white/20">
+                    <div className="text-2xl font-bold text-white">{user.role.toUpperCase()}</div>
+                    <div className="text-white/70">Account Role</div>
+                  </div>
+                  <div className="text-center p-4 bg-white/10 rounded-lg border border-white/20">
+                    <div className="text-2xl font-bold text-white">{user.username}</div>
+                    <div className="text-white/70">Username</div>
+                  </div>
+                  <div className="text-center p-4 bg-white/10 rounded-lg border border-white/20">
+                    <div className="text-2xl font-bold text-white">{user.id}</div>
+                    <div className="text-white/70">User ID</div>
+                  </div>
                 </div>
-                <div className="text-center p-4 bg-white/10 rounded-lg border border-white/20">
-                  <div className="text-2xl font-bold text-white">{user.username}</div>
-                  <div className="text-white/70">Username</div>
+              </CardContent>
+            </Card>
+
+            {/* Additional Settings */}
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center">
+                  <Shield className="h-5 w-5 mr-2 text-[#f9d423]" />
+                  Account Settings
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-4 bg-white/10 rounded-lg border border-white/20">
+                    <div>
+                      <h4 className="text-white font-medium">Email Notifications</h4>
+                      <p className="text-white/70 text-sm">Receive email updates about your tickets</p>
+                    </div>
+                    <input type="checkbox" className="h-4 w-4" defaultChecked />
+                  </div>
+                  <div className="flex items-center justify-between p-4 bg-white/10 rounded-lg border border-white/20">
+                    <div>
+                      <h4 className="text-white font-medium">SMS Notifications</h4>
+                      <p className="text-white/70 text-sm">Receive SMS updates for urgent tickets</p>
+                    </div>
+                    <input type="checkbox" className="h-4 w-4" />
+                  </div>
+                  <div className="flex items-center justify-between p-4 bg-white/10 rounded-lg border border-white/20">
+                    <div>
+                      <h4 className="text-white font-medium">Two-Factor Authentication</h4>
+                      <p className="text-white/70 text-sm">Add an extra layer of security to your account</p>
+                    </div>
+                    <Button variant="outline" size="sm" className="border-white/30 text-white hover:bg-white/10">
+                      Enable
+                    </Button>
+                  </div>
                 </div>
-                <div className="text-center p-4 bg-white/10 rounded-lg border border-white/20">
-                  <div className="text-2xl font-bold text-white">{user.id}</div>
-                  <div className="text-white/70">User ID</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+          </div>
+          )}
+
+          {/* Account Information - Shown on both tabs */}
+          {/* Remove the duplicate account information that was showing outside tabs */}
         </div>
       </div>
     </AuthGuard>
+  )
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={
+      <AuthGuard>
+        <MainHeader />
+        <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+          <div className="container mx-auto py-8">
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+                <p className="mt-4 text-white/70">Loading profile...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </AuthGuard>
+    }>
+      <ProfilePageContent />
+    </Suspense>
   )
 }
