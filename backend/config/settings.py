@@ -207,7 +207,7 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
     'https://quickdesk-production.up.railway.app',
-    'https://backend-production-4ce6.up.railway.app',
+    'https://attractive-transformation-production-c76f.up.railway.app',
 ]
 
 # Additional CORS headers
