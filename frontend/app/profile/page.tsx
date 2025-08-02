@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { User, Mail, Phone, Building, MapPin, Clock, Save, Eye, EyeOff, Shield } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -13,7 +13,7 @@ import { api } from "@/lib/api"
 import { AuthGuard } from "@/components/auth-guard"
 import { MainHeader } from "@/components/main-header"
 
-export default function ProfilePage() {
+function ProfilePageContent() {
   const { user, updateProfile, isLoading } = useAuth()
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -536,5 +536,27 @@ export default function ProfilePage() {
         </div>
       </div>
     </AuthGuard>
+  )
+}
+
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={
+      <AuthGuard>
+        <MainHeader />
+        <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+          <div className="container mx-auto py-8">
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+                <p className="mt-4 text-white/70">Loading profile...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </AuthGuard>
+    }>
+      <ProfilePageContent />
+    </Suspense>
   )
 }
