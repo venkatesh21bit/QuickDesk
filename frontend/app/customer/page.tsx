@@ -133,9 +133,9 @@ export default function CustomerDashboard() {
   if (authLoading || loading) {
     return (
       <AuthGuard>
-        <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423] flex items-center justify-center">
+        <div className="min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] flex items-center justify-center">
           <div className="text-center space-y-4">
-            <div className="h-8 w-8 animate-spin rounded-full border-4 border-white border-r-transparent mx-auto" />
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#f9d423] border-r-transparent mx-auto" />
             <p className="text-white text-lg font-medium">Loading dashboard...</p>
           </div>
         </div>
@@ -145,12 +145,14 @@ export default function CustomerDashboard() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423] relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] relative overflow-hidden">
         {/* Floating 3D Elements Background */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-10 w-36 h-36 bg-white/10 rounded-full floating-3d blur-sm"></div>
-          <div className="absolute top-40 right-20 w-28 h-28 bg-white/5 rounded-full floating-3d" style={{animationDelay: '2s'}}></div>
-          <div className="absolute bottom-40 left-1/4 w-20 h-20 bg-white/10 rounded-full floating-3d" style={{animationDelay: '4s'}}></div>
+          <div className="absolute top-20 left-10 w-32 h-32 bg-[#f9d423]/10 rounded-full floating-3d blur-sm"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-[#ff4e50]/10 rounded-full floating-3d" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-40 left-1/4 w-20 h-20 bg-[#f9d423]/5 rounded-full floating-3d" style={{animationDelay: '4s'}}></div>
+          <div className="absolute top-1/2 right-1/3 w-16 h-16 bg-[#ff4e50]/5 rounded-full floating-3d" style={{animationDelay: '6s'}}></div>
+          <div className="absolute bottom-20 right-10 w-28 h-28 bg-[#f9d423]/10 rounded-full floating-3d" style={{animationDelay: '8s'}}></div>
         </div>
         
         <MainHeader />
@@ -165,7 +167,7 @@ export default function CustomerDashboard() {
           </p>
         </div>
         <Link href="/tickets/new">
-          <Button className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold button-3d bounce-3d">
+          <Button className="bg-gradient-to-r from-[#ff4e50] to-[#f9d423] hover:from-[#f9d423] hover:to-[#ff4e50] text-white font-semibold button-3d bounce-3d">
             <Plus className="h-4 w-4 mr-2" />
             Create New Ticket
           </Button>
