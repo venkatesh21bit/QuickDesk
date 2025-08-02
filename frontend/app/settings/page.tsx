@@ -26,8 +26,17 @@ export default function SettingsPage() {
   return (
     <AuthGuard>
       <MainHeader />
-      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
-        <div className="container mx-auto py-8 space-y-8">
+      <div className="min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] relative overflow-hidden">
+        {/* Floating 3D Elements Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-[#f9d423]/10 rounded-full floating-3d blur-sm"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-[#ff4e50]/10 rounded-full floating-3d" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-40 left-1/4 w-20 h-20 bg-[#f9d423]/5 rounded-full floating-3d" style={{animationDelay: '4s'}}></div>
+          <div className="absolute top-1/2 right-1/3 w-16 h-16 bg-[#ff4e50]/5 rounded-full floating-3d" style={{animationDelay: '6s'}}></div>
+          <div className="absolute bottom-20 right-10 w-28 h-28 bg-[#f9d423]/10 rounded-full floating-3d" style={{animationDelay: '8s'}}></div>
+        </div>
+        
+        <div className="container mx-auto py-8 space-y-8 relative z-10">
           {/* Header */}
           <div className="flex items-center space-x-3">
             <Settings className="h-8 w-8 text-white" />
@@ -42,7 +51,7 @@ export default function SettingsPage() {
           {/* Settings Content */}
           <div className="max-w-4xl space-y-6">
             {/* Account Settings */}
-            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+            <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
               <CardHeader>
                 <CardTitle className="text-white flex items-center space-x-2">
                   <User className="h-5 w-5" />
@@ -92,7 +101,7 @@ export default function SettingsPage() {
             </Card>
 
             {/* Notification Settings */}
-            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+            <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
               <CardHeader>
                 <CardTitle className="text-white flex items-center space-x-2">
                   <Bell className="h-5 w-5" />
@@ -141,7 +150,7 @@ export default function SettingsPage() {
             </Card>
 
             {/* Security Settings */}
-            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+            <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
               <CardHeader>
                 <CardTitle className="text-white flex items-center space-x-2">
                   <Shield className="h-5 w-5" />
@@ -181,7 +190,7 @@ export default function SettingsPage() {
             </Card>
 
             {/* Preferences */}
-            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+            <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
               <CardHeader>
                 <CardTitle className="text-white flex items-center space-x-2">
                   <Palette className="h-5 w-5" />
