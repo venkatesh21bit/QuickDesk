@@ -1,10 +1,9 @@
 "use client"
 
 import * as React from "react"
-import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Bell, HelpCircle, LogOut, Settings, User, Search } from "lucide-react"
+import { HelpCircle, LogOut, Settings, User, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useAuth } from "@/contexts/auth-context"
@@ -13,22 +12,6 @@ import { cn } from "@/lib/utils"
 export function MainHeader() {
   const pathname = usePathname()
   const { user, logout } = useAuth()
-  const [showNotifications, setShowNotifications] = useState(false)
-  const notificationRef = useRef<HTMLDivElement>(null)
-
-  // Close notifications when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
-        setShowNotifications(false)
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
 
   // Role-based navigation
   const getNavigationForRole = () => {
@@ -110,65 +93,6 @@ export function MainHeader() {
             />
           </div>
 
-          {/* Notifications */}
-          <div className="relative" ref={notificationRef}>
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="relative text-white hover:bg-white/10 hover:text-[#f9d423]"
-              onClick={() => setShowNotifications(!showNotifications)}
-            >
-              <Bell className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
-            </Button>
-            
-            {/* Notifications Dropdown */}
-            {showNotifications && (
-              <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border z-50">
-                <div className="p-4 border-b">
-                  <h3 className="font-semibold text-gray-900">Notifications</h3>
-                </div>
-                <div className="max-h-64 overflow-y-auto">
-                  <div className="p-4 hover:bg-gray-50 border-b">
-                    <div className="flex items-start space-x-3">
-                      <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">New ticket assigned</p>
-                        <p className="text-xs text-gray-600">Ticket #12345 has been assigned to you</p>
-                        <p className="text-xs text-gray-400 mt-1">2 minutes ago</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4 hover:bg-gray-50 border-b">
-                    <div className="flex items-start space-x-3">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">Ticket resolved</p>
-                        <p className="text-xs text-gray-600">Ticket #12340 has been marked as resolved</p>
-                        <p className="text-xs text-gray-400 mt-1">1 hour ago</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-4 hover:bg-gray-50">
-                    <div className="flex items-start space-x-3">
-                      <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 flex-shrink-0"></div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">High priority ticket</p>
-                        <p className="text-xs text-gray-600">New urgent ticket requires immediate attention</p>
-                        <p className="text-xs text-gray-400 mt-1">3 hours ago</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="p-4 border-t">
-                  <Link href="/notifications" className="text-sm text-blue-600 hover:underline">
-                    View all notifications
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
-
           {/* User Menu */}
           <div className="flex items-center space-x-2">
             {user ? (
@@ -181,7 +105,7 @@ export function MainHeader() {
                     <User className="h-5 w-5" />
                   </Button>
                 </Link>
-                <Link href="/profile?tab=settings">
+                <Link href="/settings">
                   <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-[#f9d423]">
                     <Settings className="h-5 w-5" />
                   </Button>

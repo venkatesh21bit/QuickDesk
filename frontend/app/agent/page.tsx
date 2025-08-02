@@ -186,7 +186,7 @@ export default function AgentDashboard() {
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline" size="sm" className="border-white/30 text-white hover:bg-white/10">
+          <Button variant="outline" size="sm" className="border-white/50 text-white hover:bg-white/20 hover:text-white bg-white/10">
             <Bell className="h-4 w-4 mr-2" />
             Notifications
           </Button>
@@ -423,19 +423,19 @@ export default function AgentDashboard() {
           </CardHeader>
           <CardContent className="space-y-3">
             <Link href="/tickets?status=open&assigned_to=">
-              <Button variant="outline" className="w-full justify-start border-white/30 text-white hover:bg-white/10">
+              <Button variant="outline" className="w-full justify-start border-white/50 text-white hover:bg-white/20 hover:text-white bg-white/10">
                 <AlertTriangle className="h-4 w-4 mr-2" />
                 View Unassigned Tickets
               </Button>
             </Link>
             <Link href="/tickets?priority=urgent">
-              <Button variant="outline" className="w-full justify-start border-white/30 text-white hover:bg-white/10">
+              <Button variant="outline" className="w-full justify-start border-white/50 text-white hover:bg-white/20 hover:text-white bg-white/10">
                 <Clock className="h-4 w-4 mr-2" />
                 Urgent Tickets
               </Button>
             </Link>
             <Link href="/tickets?status=waiting_customer">
-              <Button variant="outline" className="w-full justify-start border-white/30 text-white hover:bg-white/10">
+              <Button variant="outline" className="w-full justify-start border-white/50 text-white hover:bg-white/20 hover:text-white bg-white/10">
                 <Users className="h-4 w-4 mr-2" />
                 Awaiting Customer Response
               </Button>
