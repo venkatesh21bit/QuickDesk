@@ -55,13 +55,13 @@ export function MainHeader() {
   const navigation = getNavigationForRole()
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-[#0f2027]/95 border-b border-white/20">
       <div className="container flex h-16 items-center">
         {/* Logo */}
         <div className="mr-8">
           <Link href="/" className="flex items-center space-x-2">
-            <HelpCircle className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold">QuickDesk</span>
+            <HelpCircle className="h-8 w-8 text-[#f9d423]" />
+            <span className="text-xl font-bold text-white">QuickDesk</span>
           </Link>
         </div>
 
@@ -72,10 +72,10 @@ export function MainHeader() {
               key={item.href}
               href={item.href}
               className={cn(
-                "transition-colors hover:text-foreground/80",
+                "transition-colors hover:text-[#f9d423]",
                 pathname === item.href
-                  ? "text-foreground"
-                  : "text-foreground/60"
+                  ? "text-[#f9d423]"
+                  : "text-white/80"
               )}
             >
               {item.name}
@@ -86,16 +86,16 @@ export function MainHeader() {
         {/* Search */}
         <div className="ml-auto flex items-center space-x-4">
           <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-white/60" />
             <Input
               type="search"
               placeholder="Search tickets..."
-              className="w-64 pl-8"
+              className="w-64 pl-8 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-[#f9d423]"
             />
           </div>
 
           {/* Notifications */}
-          <Button variant="ghost" size="icon" className="relative">
+          <Button variant="ghost" size="icon" className="relative text-white hover:bg-white/10 hover:text-[#f9d423]">
             <Bell className="h-5 w-5" />
             <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
           </Button>
@@ -104,22 +104,24 @@ export function MainHeader() {
           <div className="flex items-center space-x-2">
             {user ? (
               <>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-white/70">
                   {user.first_name || user.username} ({user.role})
                 </div>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-[#f9d423]">
                   <User className="h-5 w-5" />
                 </Button>
-                <Button variant="ghost" size="icon">
-                  <Settings className="h-5 w-5" />
-                </Button>
-                <Button variant="ghost" size="icon" onClick={logout}>
+                <Link href="/profile">
+                  <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-[#f9d423]">
+                    <Settings className="h-5 w-5" />
+                  </Button>
+                </Link>
+                <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-[#f9d423]" onClick={logout}>
                   <LogOut className="h-5 w-5" />
                 </Button>
               </>
             ) : (
               <Link href="/login">
-                <Button variant="default">
+                <Button className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold">
                   Sign In
                 </Button>
               </Link>
