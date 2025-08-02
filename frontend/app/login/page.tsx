@@ -33,13 +33,14 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#ff4e50] to-[#f9d423] px-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] px-4 relative overflow-hidden">
       {/* Floating 3D Elements Background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 left-10 w-40 h-40 bg-white/10 rounded-full floating-3d blur-sm"></div>
-        <div className="absolute top-60 right-20 w-32 h-32 bg-white/5 rounded-full floating-3d" style={{animationDelay: '2s'}}></div>
-        <div className="absolute bottom-40 left-1/3 w-24 h-24 bg-white/10 rounded-full floating-3d" style={{animationDelay: '4s'}}></div>
-        <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-white/5 rounded-full floating-3d" style={{animationDelay: '6s'}}></div>
+        <div className="absolute top-20 left-10 w-40 h-40 bg-[#f9d423]/10 rounded-full floating-3d blur-sm"></div>
+        <div className="absolute top-60 right-20 w-32 h-32 bg-[#ff4e50]/10 rounded-full floating-3d" style={{animationDelay: '2s'}}></div>
+        <div className="absolute bottom-40 left-1/3 w-24 h-24 bg-[#f9d423]/5 rounded-full floating-3d" style={{animationDelay: '4s'}}></div>
+        <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-[#ff4e50]/5 rounded-full floating-3d" style={{animationDelay: '6s'}}></div>
+        <div className="absolute bottom-20 right-10 w-28 h-28 bg-[#f9d423]/10 rounded-full floating-3d" style={{animationDelay: '8s'}}></div>
       </div>
       
       <div className="w-full max-w-md space-y-8 relative z-10">
