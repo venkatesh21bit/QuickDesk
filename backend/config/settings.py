@@ -60,6 +60,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# CSRF exemption for API endpoints
+CSRF_COOKIE_HTTPONLY = False
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://quickdesk-production.up.railway.app',
+    'https://attractive-transformation-production-c76f.up.railway.app',
+]
+
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -163,7 +173,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Django REST Framework
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
+        'app.core.authentication.CsrfExemptSessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
@@ -179,6 +189,7 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],
+    'DEFAULT_METADATA_CLASS': 'rest_framework.metadata.SimpleMetadata',
 }
 
 # Custom User Model
@@ -191,24 +202,15 @@ CORS_ALLOWED_ORIGINS = config(
 ).split(',')
 
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = DEBUG  # Allow all origins in development
 
 # Additional CORS settings for development and production
-if DEBUG:
-    CORS_ALLOW_ALL_ORIGINS = True
-else:
+if not DEBUG:
     # Production CORS settings
     CORS_ALLOWED_ORIGINS.extend([
         'https://quickdesk-production.up.railway.app',
         'https://attractive-transformation-production-c76f.up.railway.app',
     ])
-
-# CSRF settings for production
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
-    'https://quickdesk-production.up.railway.app',
-    'https://attractive-transformation-production-c76f.up.railway.app',
-]
 
 # Additional CORS headers
 CORS_ALLOW_HEADERS = [
