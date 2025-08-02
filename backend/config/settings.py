@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     # Third party apps
     'rest_framework',
     'corsheaders',
+    'django_filter',
     
     # Local apps (add your apps here)
     'app.core',
@@ -64,7 +65,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -163,22 +164,114 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 20
+    'PAGE_SIZE': 20,
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filter.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.SearchFilter',
+        'rest_framework.filters.OrderingFilter',
+    ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
 }
+
+# Custom User Model
+AUTH_USER_MODEL = 'core.User'
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS', 
-    default='http://localhost:3000,http://127.0.0.1:3000'
+    default='http://localhost:3000,http://127.0.0.1:3000,https://quickdesk-production.up.railway.app,https://backend-production-4ce6.up.railway.app'
 ).split(',')
 
 CORS_ALLOW_CREDENTIALS = True
 
-# Additional CORS settings for development
+# Additional CORS settings for development and production
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
+else:
+    # Production CORS settings
+    CORS_ALLOWED_ORIGINS.extend([
+        'https://quickdesk-production.up.railway.app',
+        'https://backend-production-4ce6.up.railway.app',
+    ])
+
+# CSRF settings for production
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://quickdesk-production.up.railway.app',
+    'https://backend-production-4ce6.up.railway.app',
+]
+
+# Additional CORS headers
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+# Email settings
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@quickdesk.com')
+
+# QuickDesk specific settings
+QUICKDESK_SETTINGS = {
+    'ENABLE_EMAIL_NOTIFICATIONS': config('ENABLE_EMAIL_NOTIFICATIONS', default=True, cast=bool),
+    'SITE_NAME': config('SITE_NAME', default='QuickDesk'),
+    'SITE_URL': config('SITE_URL', default='http://localhost:3000'),
+    'MAX_FILE_SIZE': config('MAX_FILE_SIZE', default=10485760, cast=int),  # 10MB
+    'ALLOWED_FILE_TYPES': ['pdf', 'doc', 'docx', 'txt', 'jpg', 'jpeg', 'png', 'gif'],
+}
+
+# Email Configuration
+EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='QuickDesk <noreply@quickdesk.com>')
+
+# Celery Configuration (for background tasks)
+CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', default='redis://localhost:6379/0')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = TIME_ZONE
+
+# QuickDesk Specific Settings
+QUICKDESK_SETTINGS = {
+    'SITE_NAME': config('SITE_NAME', default='QuickDesk'),
+    'SITE_URL': config('SITE_URL', default='http://localhost:3000'),
+    'ADMIN_EMAIL': config('ADMIN_EMAIL', default='admin@quickdesk.com'),
+    'ENABLE_EMAIL_NOTIFICATIONS': config('ENABLE_EMAIL_NOTIFICATIONS', default=True, cast=bool),
+    'ENABLE_SMS_NOTIFICATIONS': config('ENABLE_SMS_NOTIFICATIONS', default=False, cast=bool),
+}

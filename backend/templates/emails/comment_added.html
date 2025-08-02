@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Comment Added - {{ site_name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #10B981;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border: 1px solid #e9ecef;
+        }
+        .footer {
+            background-color: #6c757d;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 0 0 8px 8px;
+            font-size: 12px;
+        }
+        .ticket-details {
+            background-color: white;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            border-left: 4px solid #10B981;
+        }
+        .comment-box {
+            background-color: #ECFDF5;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            border-left: 4px solid #10B981;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #10B981;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+        .comment-meta {
+            font-size: 12px;
+            color: #6B7280;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>{{ site_name }}</h1>
+        <h2>New Comment Added</h2>
+    </div>
+    
+    <div class="content">
+        <p>Hello,</p>
+        
+        <p>A new comment has been added to a support ticket you're involved in.</p>
+        
+        <div class="ticket-details">
+            <h3>Ticket Details</h3>
+            <p><strong>Ticket Number:</strong> {{ ticket.ticket_number }}</p>
+            <p><strong>Subject:</strong> {{ ticket.subject }}</p>
+            <p><strong>Status:</strong> {{ ticket.get_status_display }}</p>
+            <p><strong>Priority:</strong> {{ ticket.priority.get_name_display }}</p>
+        </div>
+        
+        <div class="comment-box">
+            <div class="comment-meta">
+                <strong>Comment by:</strong> {{ comment.created_by.get_full_name|default:comment.created_by.username }}<br>
+                <strong>Posted at:</strong> {{ comment.created_at|date:"F d, Y at g:i A" }}<br>
+                <strong>Type:</strong> {{ comment.get_comment_type_display }}
+                {% if comment.is_internal %}
+                <span style="color: #DC2626;">(Internal Note)</span>
+                {% endif %}
+            </div>
+            <h4>Comment:</h4>
+            <p>{{ comment.content|linebreaks }}</p>
+        </div>
+        
+        <a href="{{ site_url }}/tickets/{{ ticket.id }}" class="btn">View Ticket</a>
+    </div>
+    
+    <div class="footer">
+        <p>&copy; {{ site_name }} - Automated Help Desk System</p>
+        <p>This email was sent automatically. Please do not reply to this email.</p>
+    </div>
+</body>
+</html>
