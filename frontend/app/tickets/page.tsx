@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { useAuth } from "@/contexts/auth-context"
 import { api } from "@/lib/api"
+import { MainHeader } from "@/components/main-header"
 
 interface Ticket {
   id: string
@@ -167,16 +168,21 @@ export default function TicketsPage() {
 
   if (authLoading || !user) {
     return (
-      <div className="container mx-auto py-8">
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin" />
+      <>
+        <MainHeader />
+        <div className="container mx-auto py-8">
+          <div className="flex items-center justify-center h-64">
+            <Loader2 className="h-8 w-8 animate-spin" />
+          </div>
         </div>
-      </div>
+      </>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+    <>
+      <MainHeader />
+      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
       <div className="container mx-auto py-8 space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">
@@ -426,5 +432,6 @@ export default function TicketsPage() {
       )}
       </div>
     </div>
+    </>
   )
 }
