@@ -180,18 +180,18 @@ export default function AgentDashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Agent Dashboard</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold tracking-tight text-white">Agent Dashboard</h1>
+          <p className="text-white/70">
             Manage and resolve customer support tickets.
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="border-white/30 text-white hover:bg-white/10">
             <Bell className="h-4 w-4 mr-2" />
             Notifications
           </Button>
           <Link href="/tickets">
-            <Button>
+            <Button className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold">
               <Ticket className="h-4 w-4 mr-2" />
               All Tickets
             </Button>
@@ -201,99 +201,99 @@ export default function AgentDashboard() {
 
       {/* Quick Stats */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Assigned</CardTitle>
-            <UserCheck className="h-4 w-4 text-primary" />
+            <CardTitle className="text-sm font-medium text-white">Assigned</CardTitle>
+            <UserCheck className="h-4 w-4 text-[#f9d423]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.assigned_tickets}</div>
+            <div className="text-2xl font-bold text-white">{stats.assigned_tickets}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">In Progress</CardTitle>
-            <Clock className="h-4 w-4 text-warning" />
+            <CardTitle className="text-sm font-medium text-white">In Progress</CardTitle>
+            <Clock className="h-4 w-4 text-[#f9d423]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.in_progress_tickets}</div>
+            <div className="text-2xl font-bold text-white">{stats.in_progress_tickets}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Resolved</CardTitle>
-            <CheckCircle className="h-4 w-4 text-success" />
+            <CardTitle className="text-sm font-medium text-white">Resolved</CardTitle>
+            <CheckCircle className="h-4 w-4 text-[#f9d423]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.resolved_tickets}</div>
+            <div className="text-2xl font-bold text-white">{stats.resolved_tickets}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Unassigned</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-destructive" />
+            <CardTitle className="text-sm font-medium text-white">Unassigned</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-[#f9d423]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.unassigned_tickets}</div>
+            <div className="text-2xl font-bold text-white">{stats.unassigned_tickets}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total</CardTitle>
-            <Ticket className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-white">Total</CardTitle>
+            <Ticket className="h-4 w-4 text-[#f9d423]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.total_tickets}</div>
+            <div className="text-2xl font-bold text-white">{stats.total_tickets}</div>
           </CardContent>
         </Card>
       </div>
 
       {/* Filters and Search */}
-      <Card>
+      <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
         <CardHeader>
-          <CardTitle>My Tickets</CardTitle>
+          <CardTitle className="text-white">My Tickets</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Search */}
           <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-3 h-4 w-4 text-white/60" />
             <Input
               placeholder="Search tickets..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9"
+              className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-[#f9d423]"
             />
           </div>
 
           {/* Filters */}
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center space-x-2">
-              <label className="text-sm font-medium">Status:</label>
+              <label className="text-sm font-medium text-white">Status:</label>
               <select 
-                className="p-2 border rounded-md text-sm"
+                className="p-2 border rounded-md text-sm bg-white/10 border-white/20 text-white focus:border-[#f9d423]"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
-                <option value="all">All</option>
-                <option value="assigned">Assigned</option>
-                <option value="in_progress">In Progress</option>
-                <option value="waiting_customer">Waiting Customer</option>
-                <option value="resolved">Resolved</option>
+                <option value="all" className="text-gray-900">All</option>
+                <option value="assigned" className="text-gray-900">Assigned</option>
+                <option value="in_progress" className="text-gray-900">In Progress</option>
+                <option value="waiting_customer" className="text-gray-900">Waiting Customer</option>
+                <option value="resolved" className="text-gray-900">Resolved</option>
               </select>
             </div>
 
             <div className="flex items-center space-x-2">
-              <label className="text-sm font-medium">Priority:</label>
+              <label className="text-sm font-medium text-white">Priority:</label>
               <select 
-                className="p-2 border rounded-md text-sm"
+                className="p-2 border rounded-md text-sm bg-white/10 border-white/20 text-white focus:border-[#f9d423]"
                 value={priorityFilter}
                 onChange={(e) => setPriorityFilter(e.target.value)}
               >
-                <option value="all">All</option>
-                <option value="urgent">Urgent</option>
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
+                <option value="all" className="text-gray-900">All</option>
+                <option value="urgent" className="text-gray-900">Urgent</option>
+                <option value="high" className="text-gray-900">High</option>
+                <option value="medium" className="text-gray-900">Medium</option>
+                <option value="low" className="text-gray-900">Low</option>
               </select>
             </div>
           </div>
@@ -304,7 +304,7 @@ export default function AgentDashboard() {
       <div className="space-y-4">
         {filteredTickets.length > 0 ? (
           filteredTickets.map((ticket) => (
-            <Card key={ticket.id} className="hover:shadow-md transition-shadow">
+            <Card key={ticket.id} className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl hover:bg-[#0f2027]/90 transition-all">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1 space-y-3">
@@ -312,7 +312,7 @@ export default function AgentDashboard() {
                     <div className="flex items-center space-x-3 flex-wrap">
                       <Link 
                         href={`/tickets/${ticket.id}`}
-                        className="text-lg font-semibold hover:text-primary"
+                        className="text-lg font-semibold text-white hover:text-[#f9d423] transition-colors"
                       >
                         {ticket.subject}
                       </Link>
@@ -325,13 +325,14 @@ export default function AgentDashboard() {
                       <Badge 
                         variant="outline" 
                         style={{ borderColor: ticket.category_color, color: ticket.category_color }}
+                        className="bg-white/10"
                       >
                         {ticket.category_name}
                       </Badge>
                     </div>
 
                     {/* Meta */}
-                    <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                    <div className="flex items-center space-x-4 text-sm text-white/60">
                       <span>#{ticket.ticket_number}</span>
                       <span>•</span>
                       <span>Customer: {ticket.created_by_username}</span>
@@ -350,7 +351,7 @@ export default function AgentDashboard() {
                   <div className="flex flex-col space-y-2 ml-4">
                     <div className="flex items-center space-x-2">
                       <Link href={`/tickets/${ticket.id}`}>
-                        <Button size="sm">
+                        <Button size="sm" className="bg-white text-[#ff4e50] hover:bg-white/90">
                           View Details
                         </Button>
                       </Link>
@@ -359,6 +360,7 @@ export default function AgentDashboard() {
                           size="sm" 
                           variant="outline"
                           onClick={() => handleAssignTicket(ticket.id)}
+                          className="border-white/30 text-white hover:bg-white/10"
                         >
                           Assign to Me
                         </Button>
@@ -370,11 +372,11 @@ export default function AgentDashboard() {
             </Card>
           ))
         ) : (
-          <Card>
+          <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
             <CardContent className="py-12 text-center">
-              <Ticket className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-medium mb-2">No tickets found</h3>
-              <p className="text-muted-foreground">
+              <Ticket className="h-12 w-12 text-white/60 mx-auto mb-4" />
+              <h3 className="text-lg font-medium mb-2 text-white">No tickets found</h3>
+              <p className="text-white/70">
                 {searchTerm || statusFilter !== "all" || priorityFilter !== "all" 
                   ? "No tickets match your current filters." 
                   : "You don't have any assigned tickets yet."}
@@ -386,54 +388,54 @@ export default function AgentDashboard() {
 
       {/* Performance Summary */}
       <div className="grid gap-4 md:grid-cols-2">
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader>
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center text-white">
               <TrendingUp className="h-5 w-5 mr-2" />
               Performance This Week
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex justify-between items-center">
-              <span className="text-sm">Tickets Resolved</span>
-              <span className="font-medium">{stats.resolved_tickets}</span>
+              <span className="text-sm text-white/70">Tickets Resolved</span>
+              <span className="font-medium text-white">{stats.resolved_tickets}</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm">Average Response Time</span>
-              <span className="font-medium">2.3 hours</span>
+              <span className="text-sm text-white/70">Average Response Time</span>
+              <span className="font-medium text-white">2.3 hours</span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-sm">Customer Satisfaction</span>
+              <span className="text-sm text-white/70">Customer Satisfaction</span>
               <div className="flex items-center">
-                <Star className="h-4 w-4 text-yellow-400 mr-1" />
-                <span className="font-medium">4.8/5</span>
+                <Star className="h-4 w-4 text-[#f9d423] mr-1" />
+                <span className="font-medium text-white">4.8/5</span>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader>
-            <CardTitle className="flex items-center">
+            <CardTitle className="flex items-center text-white">
               <Bell className="h-5 w-5 mr-2" />
               Quick Actions
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <Link href="/tickets?status=open&assigned_to=">
-              <Button variant="outline" className="w-full justify-start">
+              <Button variant="outline" className="w-full justify-start border-white/30 text-white hover:bg-white/10">
                 <AlertTriangle className="h-4 w-4 mr-2" />
                 View Unassigned Tickets
               </Button>
             </Link>
             <Link href="/tickets?priority=urgent">
-              <Button variant="outline" className="w-full justify-start">
+              <Button variant="outline" className="w-full justify-start border-white/30 text-white hover:bg-white/10">
                 <Clock className="h-4 w-4 mr-2" />
                 Urgent Tickets
               </Button>
             </Link>
             <Link href="/tickets?status=waiting_customer">
-              <Button variant="outline" className="w-full justify-start">
+              <Button variant="outline" className="w-full justify-start border-white/30 text-white hover:bg-white/10">
                 <Users className="h-4 w-4 mr-2" />
                 Awaiting Customer Response
               </Button>

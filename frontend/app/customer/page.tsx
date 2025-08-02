@@ -130,27 +130,30 @@ export default function CustomerDashboard() {
 
   if (authLoading || loading) {
     return (
-      <div className="container mx-auto py-8">
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Loading dashboard...</span>
+      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+        <div className="container mx-auto py-8">
+          <div className="flex items-center justify-center h-64">
+            <Loader2 className="h-8 w-8 animate-spin text-white" />
+            <span className="ml-2 text-white">Loading dashboard...</span>
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+      <div className="container mx-auto py-8 space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Customer Dashboard</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-3xl font-bold tracking-tight text-white">Customer Dashboard</h1>
+          <p className="text-white/70">
             Track your support tickets and get help when you need it.
           </p>
         </div>
         <Link href="/tickets/new">
-          <Button>
+          <Button className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold">
             <Plus className="h-4 w-4 mr-2" />
             Create New Ticket
           </Button>
@@ -159,61 +162,61 @@ export default function CustomerDashboard() {
 
       {/* Quick Stats */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Tickets</CardTitle>
-            <Ticket className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-white">Total Tickets</CardTitle>
+            <Ticket className="h-4 w-4 text-[#f9d423]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.total_tickets}</div>
+            <div className="text-2xl font-bold text-white">{stats.total_tickets}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Open</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-destructive" />
+            <CardTitle className="text-sm font-medium text-white">Open</CardTitle>
+            <AlertTriangle className="h-4 w-4 text-[#f9d423]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.open_tickets}</div>
+            <div className="text-2xl font-bold text-white">{stats.open_tickets}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">In Progress</CardTitle>
-            <Clock className="h-4 w-4 text-warning" />
+            <CardTitle className="text-sm font-medium text-white">In Progress</CardTitle>
+            <Clock className="h-4 w-4 text-[#f9d423]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.in_progress_tickets}</div>
+            <div className="text-2xl font-bold text-white">{stats.in_progress_tickets}</div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Resolved</CardTitle>
-            <CheckCircle className="h-4 w-4 text-success" />
+            <CardTitle className="text-sm font-medium text-white">Resolved</CardTitle>
+            <CheckCircle className="h-4 w-4 text-[#f9d423]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.resolved_tickets}</div>
+            <div className="text-2xl font-bold text-white">{stats.resolved_tickets}</div>
           </CardContent>
         </Card>
       </div>
 
       {/* Recent Tickets */}
-      <Card>
+      <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>Recent Tickets</CardTitle>
+            <CardTitle className="text-white">Recent Tickets</CardTitle>
             <div className="flex items-center space-x-2">
               <div className="relative">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-white/60" />
                 <Input
                   placeholder="Search tickets..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-8 w-64"
+                  className="pl-8 w-64 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-[#f9d423]"
                 />
               </div>
               <Link href="/tickets">
-                <Button variant="outline" size="sm">
+                <Button variant="outline" size="sm" className="border-white/30 text-white hover:bg-white/10">
                   View All
                 </Button>
               </Link>
@@ -224,12 +227,12 @@ export default function CustomerDashboard() {
           {filteredTickets.length > 0 ? (
             <div className="space-y-4">
               {filteredTickets.map((ticket) => (
-                <div key={ticket.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
+                <div key={ticket.id} className="flex items-center justify-between p-4 border border-white/20 rounded-lg hover:bg-white/10 transition-colors">
                   <div className="space-y-2">
                     <div className="flex items-center space-x-3">
                       <Link 
                         href={`/tickets/${ticket.id}`}
-                        className="font-medium hover:text-primary"
+                        className="font-medium text-white hover:text-[#f9d423]"
                       >
                         {ticket.subject}
                       </Link>
@@ -240,11 +243,12 @@ export default function CustomerDashboard() {
                         {ticket.priority_name}
                       </Badge>
                     </div>
-                    <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                    <div className="flex items-center space-x-4 text-sm text-white/60">
                       <span>#{ticket.ticket_number}</span>
                       <Badge 
                         variant="outline" 
                         style={{ borderColor: ticket.category_color, color: ticket.category_color }}
+                        className="bg-white/10"
                       >
                         {ticket.category_name}
                       </Badge>
@@ -255,7 +259,7 @@ export default function CustomerDashboard() {
                       </span>
                     </div>
                   </div>
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-sm text-white/60">
                     Updated {formatDate(ticket.updated_at)}
                   </div>
                 </div>
@@ -263,13 +267,13 @@ export default function CustomerDashboard() {
             </div>
           ) : (
             <div className="text-center py-8">
-              <Ticket className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-medium mb-2">No tickets found</h3>
-              <p className="text-muted-foreground mb-4">
+              <Ticket className="h-12 w-12 text-white/60 mx-auto mb-4" />
+              <h3 className="text-lg font-medium mb-2 text-white">No tickets found</h3>
+              <p className="text-white/70 mb-4">
                 {searchTerm ? "No tickets match your search." : "You haven't created any tickets yet."}
               </p>
               <Link href="/tickets/new">
-                <Button>
+                <Button className="bg-white text-[#ff4e50] hover:bg-white/90">
                   <Plus className="h-4 w-4 mr-2" />
                   Create Your First Ticket
                 </Button>
@@ -281,13 +285,13 @@ export default function CustomerDashboard() {
 
       {/* Quick Actions */}
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl hover:bg-[#0f2027]/90 transition-all cursor-pointer">
           <CardHeader>
             <div className="flex items-center space-x-3">
-              <BookOpen className="h-8 w-8 text-primary" />
+              <BookOpen className="h-8 w-8 text-[#f9d423]" />
               <div>
-                <CardTitle className="text-lg">Knowledge Base</CardTitle>
-                <p className="text-sm text-muted-foreground">
+                <CardTitle className="text-lg text-white">Knowledge Base</CardTitle>
+                <p className="text-sm text-white/70">
                   Browse articles and find answers
                 </p>
               </div>
@@ -295,13 +299,13 @@ export default function CustomerDashboard() {
           </CardHeader>
         </Card>
         
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl hover:bg-[#0f2027]/90 transition-all cursor-pointer">
           <CardHeader>
             <div className="flex items-center space-x-3">
-              <MessageSquare className="h-8 w-8 text-primary" />
+              <MessageSquare className="h-8 w-8 text-[#f9d423]" />
               <div>
-                <CardTitle className="text-lg">Live Chat</CardTitle>
-                <p className="text-sm text-muted-foreground">
+                <CardTitle className="text-lg text-white">Live Chat</CardTitle>
+                <p className="text-sm text-white/70">
                   Get instant help from our team
                 </p>
               </div>
@@ -309,19 +313,20 @@ export default function CustomerDashboard() {
           </CardHeader>
         </Card>
         
-        <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl hover:bg-[#0f2027]/90 transition-all cursor-pointer">
           <CardHeader>
             <div className="flex items-center space-x-3">
-              <TrendingUp className="h-8 w-8 text-primary" />
+              <TrendingUp className="h-8 w-8 text-[#f9d423]" />
               <div>
-                <CardTitle className="text-lg">System Status</CardTitle>
-                <p className="text-sm text-muted-foreground">
+                <CardTitle className="text-lg text-white">System Status</CardTitle>
+                <p className="text-sm text-white/70">
                   Check current system health
                 </p>
               </div>
             </div>
           </CardHeader>
         </Card>
+      </div>
       </div>
     </div>
   )

@@ -107,9 +107,11 @@ export function MainHeader() {
                 <div className="text-sm text-white/70">
                   {user.first_name || user.username} ({user.role})
                 </div>
-                <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-[#f9d423]">
-                  <User className="h-5 w-5" />
-                </Button>
+                <Link href="/profile">
+                  <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-[#f9d423]">
+                    <User className="h-5 w-5" />
+                  </Button>
+                </Link>
                 <Link href="/profile">
                   <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-[#f9d423]">
                     <Settings className="h-5 w-5" />
