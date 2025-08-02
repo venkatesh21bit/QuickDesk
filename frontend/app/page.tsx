@@ -121,12 +121,20 @@ export default function DashboardPage() {
     return (
       <AuthGuard>
         <MainHeader />
-        <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
-          <div className="container mx-auto py-8">
+        <div className="min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] relative overflow-hidden">
+          {/* Floating 3D Elements Background */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-20 left-10 w-32 h-32 bg-[#f9d423]/10 rounded-full floating-3d blur-sm"></div>
+            <div className="absolute top-40 right-20 w-24 h-24 bg-[#ff4e50]/10 rounded-full floating-3d" style={{animationDelay: '2s'}}></div>
+            <div className="absolute bottom-40 left-1/4 w-20 h-20 bg-[#f9d423]/5 rounded-full floating-3d" style={{animationDelay: '4s'}}></div>
+            <div className="absolute top-1/2 right-1/3 w-16 h-16 bg-[#ff4e50]/5 rounded-full floating-3d" style={{animationDelay: '6s'}}></div>
+            <div className="absolute bottom-20 right-10 w-28 h-28 bg-[#f9d423]/10 rounded-full floating-3d" style={{animationDelay: '8s'}}></div>
+          </div>
+          <div className="container mx-auto py-8 relative z-10">
             <div className="flex items-center justify-center h-64">
-              <div className="text-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
-                <p className="mt-4 text-white/70">Loading dashboard...</p>
+              <div className="text-center space-y-4">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#f9d423] border-r-transparent mx-auto"></div>
+                <p className="text-white text-lg font-medium">Loading dashboard...</p>
               </div>
             </div>
           </div>
@@ -138,8 +146,16 @@ export default function DashboardPage() {
   return (
     <AuthGuard>
       <MainHeader />
-      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
-        <div className="container mx-auto py-8 space-y-8">
+      <div className="min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] relative overflow-hidden">
+        {/* Floating 3D Elements Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-[#f9d423]/10 rounded-full floating-3d blur-sm"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-[#ff4e50]/10 rounded-full floating-3d" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-40 left-1/4 w-20 h-20 bg-[#f9d423]/5 rounded-full floating-3d" style={{animationDelay: '4s'}}></div>
+          <div className="absolute top-1/2 right-1/3 w-16 h-16 bg-[#ff4e50]/5 rounded-full floating-3d" style={{animationDelay: '6s'}}></div>
+          <div className="absolute bottom-20 right-10 w-28 h-28 bg-[#f9d423]/10 rounded-full floating-3d" style={{animationDelay: '8s'}}></div>
+        </div>
+        <div className="container mx-auto py-8 space-y-8 relative z-10">
         {/* Welcome Section */}
         <div className="flex items-center justify-between">
           <div>
@@ -152,14 +168,14 @@ export default function DashboardPage() {
           </div>
           <Button 
             onClick={() => router.push("/tickets/new")}
-            className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold"
+            className="bg-gradient-to-r from-[#ff4e50] to-[#f9d423] hover:from-[#f9d423] hover:to-[#ff4e50] text-white font-semibold button-3d bounce-3d"
           >
             <Ticket className="h-4 w-4 mr-2" />
             Create New Ticket
           </Button>
         </div>      {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">Total Tickets</CardTitle>
             <Ticket className="h-4 w-4 text-[#f9d423]" />
@@ -174,7 +190,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
         
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">Open Tickets</CardTitle>
             <Clock className="h-4 w-4 text-[#f9d423]" />
@@ -189,7 +205,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
         
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">In Progress</CardTitle>
             <Users className="h-4 w-4 text-[#f9d423]" />
@@ -204,7 +220,7 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
         
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">Resolved</CardTitle>
             <CheckCircle className="h-4 w-4 text-[#f9d423]" />
@@ -222,7 +238,7 @@ export default function DashboardPage() {
 
       {/* Recent Tickets */}
       <div className="grid gap-6 lg:grid-cols-2">
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader>
             <CardTitle className="text-white">Recent Tickets</CardTitle>
           </CardHeader>
@@ -264,7 +280,7 @@ export default function DashboardPage() {
                 <p className="text-white">No tickets found</p>
                 <Button 
                   variant="outline" 
-                  className="mt-2 bg-white/10 border-white/20 text-white hover:bg-white/20"
+                  className="mt-2 border-white/30 text-white hover:bg-white/10 button-3d"
                   onClick={() => router.push("/tickets/new")}
                 >
                   Create your first ticket
@@ -274,13 +290,13 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader>
             <CardTitle className="text-white">Quick Actions</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <Button 
-              className="w-full justify-start bg-white text-[#ff4e50] hover:bg-white/90 font-semibold"
+              className="w-full justify-start bg-gradient-to-r from-[#ff4e50] to-[#f9d423] hover:from-[#f9d423] hover:to-[#ff4e50] text-white font-semibold button-3d"
               onClick={() => router.push("/tickets/new")}
             >
               <Ticket className="h-4 w-4 mr-2" />

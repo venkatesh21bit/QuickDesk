@@ -33,29 +33,38 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#ff4e50] to-[#f9d423] px-4">
-      <div className="w-full max-w-md space-y-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] px-4 relative overflow-hidden">
+      {/* Floating 3D Elements Background */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 left-10 w-40 h-40 bg-[#f9d423]/10 rounded-full floating-3d blur-sm"></div>
+        <div className="absolute top-60 right-20 w-32 h-32 bg-[#ff4e50]/10 rounded-full floating-3d" style={{animationDelay: '2s'}}></div>
+        <div className="absolute bottom-40 left-1/3 w-24 h-24 bg-[#f9d423]/5 rounded-full floating-3d" style={{animationDelay: '4s'}}></div>
+        <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-[#ff4e50]/5 rounded-full floating-3d" style={{animationDelay: '6s'}}></div>
+        <div className="absolute bottom-20 right-10 w-28 h-28 bg-[#f9d423]/10 rounded-full floating-3d" style={{animationDelay: '8s'}}></div>
+      </div>
+      
+      <div className="w-full max-w-md space-y-8 relative z-10">
         {/* Logo */}
-        <div className="text-center">
-          <div className="flex items-center justify-center space-x-2 mb-4">
-            <HelpCircle className="h-10 w-10 text-[#f9d423]" />
-            <span className="text-3xl font-bold text-white">QuickDesk</span>
+        <div className="text-center slide-in-3d">
+          <div className="flex items-center justify-center space-x-2 mb-4 group">
+            <HelpCircle className="h-10 w-10 text-[#f9d423] transition-transform group-hover:scale-110 group-hover:rotate-12" />
+            <span className="text-3xl font-bold text-white drop-shadow-lg">QuickDesk</span>
           </div>
-          <h1 className="text-2xl font-semibold text-white">Welcome back</h1>
-          <p className="text-white/70">
+          <h1 className="text-2xl font-semibold text-white drop-shadow-md">Welcome back</h1>
+          <p className="text-white/70 drop-shadow-sm">
             Sign in to your account to access your support tickets
           </p>
         </div>
 
         {/* Login Form */}
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader>
             <CardTitle className="text-white">Sign In</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <div className="p-3 bg-red-500/20 border border-red-500/30 rounded-md">
+                <div className="p-3 bg-red-500/20 border border-red-500/30 rounded-md card-3d">
                   <p className="text-sm text-red-300">{error}</p>
                 </div>
               )}
@@ -67,7 +76,7 @@ export default function LoginPage() {
                   placeholder="Enter your username"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                  className="input-3d bg-white/10 border-white/20 text-white placeholder:text-white/50"
                   required
                 />
               </div>
@@ -80,14 +89,14 @@ export default function LoginPage() {
                     placeholder="Enter your password"
                     value={formData.password}
                     onChange={(e) => setFormData({...formData, password: e.target.value})}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                    className="input-3d bg-white/10 border-white/20 text-white placeholder:text-white/50"
                     required
                   />
                   <Button
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="absolute right-0 top-0 h-full px-3 text-white/60 hover:text-white hover:bg-white/10"
+                    className="absolute right-0 top-0 h-full px-3 text-white/60 hover:text-white hover:bg-white/10 button-3d"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
@@ -101,48 +110,62 @@ export default function LoginPage() {
 
               <div className="flex items-center justify-between">
                 <label className="flex items-center space-x-2 text-sm text-white">
-                  <input type="checkbox" className="rounded bg-white/10 border-white/20" />
+                  <input 
+                    type="checkbox" 
+                    className="rounded bg-white/10 border-white/20 w-4 h-4 text-[#f9d423] focus:ring-[#f9d423] focus:ring-2" 
+                  />
                   <span>Remember me</span>
                 </label>
-                <Button variant="link" className="px-0 text-sm text-[#f9d423] hover:text-[#f9d423]/80">
+                <Button variant="link" className="px-0 text-sm text-[#f9d423] hover:text-[#f9d423]/80 font-medium">
                   Forgot password?
                 </Button>
               </div>
 
-              <Button type="submit" className="w-full bg-white text-[#ff4e50] hover:bg-white/90 font-semibold" disabled={isLoading}>
-                {isLoading ? "Signing in..." : "Sign In"}
+              <Button 
+                type="submit" 
+                className="w-full button-3d bg-gradient-to-r from-[#ff4e50] to-[#f9d423] hover:from-[#f9d423] hover:to-[#ff4e50] text-white font-semibold shadow-xl" 
+                disabled={isLoading}
+              >
+                {isLoading ? (
+                  <div className="flex items-center space-x-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    <span>Signing in...</span>
+                  </div>
+                ) : (
+                  "Sign In"
+                )}
               </Button>
             </form>
           </CardContent>
         </Card>
 
         {/* Sign Up Link */}
-        <div className="text-center">
+        <div className="text-center slide-in-3d" style={{animationDelay: '0.2s'}}>
           <p className="text-sm text-white/70">
             Don't have an account?{" "}
-            <Link href="/signup" className="text-[#f9d423] hover:text-[#f9d423]/80 font-medium">
+            <Link href="/signup" className="text-[#f9d423] hover:text-[#f9d423]/80 font-medium hover:underline transition-all">
               Sign up here
             </Link>
           </p>
         </div>
 
         {/* Demo Credentials */}
-        <Card className="backdrop-blur-md bg-[#0f2027]/60 border-white/20">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/60 border-white/20 glass-3d slide-in-3d" style={{animationDelay: '0.4s'}}>
           <CardContent className="pt-6">
             <div className="text-center space-y-3">
               <p className="text-sm font-medium text-white">Demo Credentials</p>
               <div className="text-xs text-white/60 space-y-2">
-                <div className="border border-white/20 rounded p-2 bg-white/5">
+                <div className="border border-white/20 rounded p-2 bg-white/5 card-3d hover:bg-white/10 transition-all">
                   <p className="font-medium text-white">Customer:</p>
                   <p>Username: customer</p>
                   <p>Password: password</p>
                 </div>
-                <div className="border border-white/20 rounded p-2 bg-white/5">
+                <div className="border border-white/20 rounded p-2 bg-white/5 card-3d hover:bg-white/10 transition-all">
                   <p className="font-medium text-white">Agent:</p>
                   <p>Username: agent</p>
                   <p>Password: password</p>
                 </div>
-                <div className="border border-white/20 rounded p-2 bg-white/5">
+                <div className="border border-white/20 rounded p-2 bg-white/5 card-3d hover:bg-white/10 transition-all">
                   <p className="font-medium text-white">Admin:</p>
                   <p>Username: admin</p>
                   <p>Password: password</p>
