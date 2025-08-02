@@ -9,6 +9,8 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { useAuth } from "@/contexts/auth-context"
 import { api } from "@/lib/api"
+import { AuthGuard } from "@/components/auth-guard"
+import { MainHeader } from "@/components/main-header"
 
 interface DashboardStats {
   total_tickets: number
@@ -117,92 +119,101 @@ export default function DashboardPage() {
 
   if (isLoading || !user) {
     return (
-      <div className="container mx-auto py-8">
-        <div className="flex items-center justify-center h-64">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
-            <p className="mt-4 text-muted-foreground">Loading dashboard...</p>
+      <AuthGuard>
+        <MainHeader />
+        <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+          <div className="container mx-auto py-8">
+            <div className="flex items-center justify-center h-64">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto"></div>
+                <p className="mt-4 text-white/70">Loading dashboard...</p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </AuthGuard>
     )
   }
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
-      {/* Welcome Section */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">
-            Welcome back, {user.first_name || user.username}
-          </h1>
-          <p className="text-muted-foreground">
-            Here's what's happening with your support tickets today.
-          </p>
-        </div>
-        <Button onClick={() => router.push("/tickets/new")}>
-          <Ticket className="h-4 w-4 mr-2" />
-          Create New Ticket
-        </Button>
-      </div>
-
-      {/* Stats Cards */}
+    <AuthGuard>
+      <MainHeader />
+      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+        <div className="container mx-auto py-8 space-y-8">
+        {/* Welcome Section */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-white">
+              Welcome back, {user.first_name || user.username}
+            </h1>
+            <p className="text-white/70">
+              Here's what's happening with your support tickets today.
+            </p>
+          </div>
+          <Button 
+            onClick={() => router.push("/tickets/new")}
+            className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold"
+          >
+            <Ticket className="h-4 w-4 mr-2" />
+            Create New Ticket
+          </Button>
+        </div>      {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Tickets</CardTitle>
-            <Ticket className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-white">Total Tickets</CardTitle>
+            <Ticket className="h-4 w-4 text-[#f9d423]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-white">
               {loadingStats ? "..." : stats?.total_tickets || 0}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-white/60">
               {user.role === "customer" ? "Your tickets" : "All tickets"}
             </p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Open Tickets</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-white">Open Tickets</CardTitle>
+            <Clock className="h-4 w-4 text-[#f9d423]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-white">
               {loadingStats ? "..." : stats?.open_tickets || 0}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-white/60">
               Need attention
             </p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">In Progress</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-white">In Progress</CardTitle>
+            <Users className="h-4 w-4 text-[#f9d423]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-white">
               {loadingStats ? "..." : stats?.in_progress_tickets || 0}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-white/60">
               Being worked on
             </p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Resolved</CardTitle>
-            <CheckCircle className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-white">Resolved</CardTitle>
+            <CheckCircle className="h-4 w-4 text-[#f9d423]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">
+            <div className="text-2xl font-bold text-white">
               {loadingStats ? "..." : stats?.resolved_tickets || 0}
             </div>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-white/60">
               Completed
             </p>
           </CardContent>
@@ -211,9 +222,9 @@ export default function DashboardPage() {
 
       {/* Recent Tickets */}
       <div className="grid gap-6 lg:grid-cols-2">
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader>
-            <CardTitle>Recent Tickets</CardTitle>
+            <CardTitle className="text-white">Recent Tickets</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             {loadingTickets ? (
@@ -229,11 +240,11 @@ export default function DashboardPage() {
               </div>
             ) : recentTickets.length > 0 ? (
               recentTickets.map((ticket) => (
-                <div key={ticket.id} className="flex items-center justify-between p-3 border rounded-lg hover:bg-accent cursor-pointer"
+                <div key={ticket.id} className="flex items-center justify-between p-3 border border-white/20 rounded-lg hover:bg-white/10 cursor-pointer transition-colors"
                      onClick={() => router.push(`/tickets/${ticket.id}`)}>
                   <div className="space-y-1">
-                    <p className="text-sm font-medium">{ticket.subject}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-sm font-medium text-white">{ticket.subject}</p>
+                    <p className="text-xs text-white/60">
                       {ticket.ticket_number} • {formatDate(ticket.created_at)}
                     </p>
                   </div>
@@ -248,12 +259,12 @@ export default function DashboardPage() {
                 </div>
               ))
             ) : (
-              <div className="text-center py-8 text-muted-foreground">
-                <Ticket className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>No tickets found</p>
+              <div className="text-center py-8 text-white/60">
+                <Ticket className="h-12 w-12 mx-auto mb-4 opacity-50 text-[#f9d423]" />
+                <p className="text-white">No tickets found</p>
                 <Button 
                   variant="outline" 
-                  className="mt-2"
+                  className="mt-2 bg-white/10 border-white/20 text-white hover:bg-white/20"
                   onClick={() => router.push("/tickets/new")}
                 >
                   Create your first ticket
@@ -263,14 +274,13 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
+            <CardTitle className="text-white">Quick Actions</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <Button 
-              variant="outline" 
-              className="w-full justify-start"
+              className="w-full justify-start bg-white text-[#ff4e50] hover:bg-white/90 font-semibold"
               onClick={() => router.push("/tickets/new")}
             >
               <Ticket className="h-4 w-4 mr-2" />
@@ -278,33 +288,35 @@ export default function DashboardPage() {
             </Button>
             <Button 
               variant="outline" 
-              className="w-full justify-start"
+              className="w-full justify-start bg-white/10 border-white/20 text-white hover:bg-white/20"
               onClick={() => router.push("/tickets")}
             >
-              <Clock className="h-4 w-4 mr-2" />
+              <Clock className="h-4 w-4 mr-2 text-[#f9d423]" />
               View All Tickets
             </Button>
             {user.role !== "customer" && (
               <Button 
                 variant="outline" 
-                className="w-full justify-start"
+                className="w-full justify-start bg-white/10 border-white/20 text-white hover:bg-white/20"
                 onClick={() => router.push(`/${user.role}`)}
               >
-                <Users className="h-4 w-4 mr-2" />
+                <Users className="h-4 w-4 mr-2 text-[#f9d423]" />
                 {user.role === "agent" ? "Agent Dashboard" : "Admin Panel"}
               </Button>
             )}
             <Button 
               variant="outline" 
-              className="w-full justify-start"
+              className="w-full justify-start bg-white/10 border-white/20 text-white hover:bg-white/20"
               onClick={() => router.push("/profile")}
             >
-              <Users className="h-4 w-4 mr-2" />
+              <Users className="h-4 w-4 mr-2 text-[#f9d423]" />
               Profile Settings
             </Button>
           </CardContent>
         </Card>
+        </div>
       </div>
     </div>
+    </AuthGuard>
   )
 }

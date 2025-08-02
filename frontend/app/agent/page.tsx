@@ -25,6 +25,8 @@ import {
 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { api } from "@/lib/api"
+import { AuthGuard } from "@/components/auth-guard"
+import { MainHeader } from "@/components/main-header"
 
 interface TicketSummary {
   id: string
@@ -156,17 +158,25 @@ export default function AgentDashboard() {
 
   if (authLoading || loading) {
     return (
-      <div className="container mx-auto py-8">
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin" />
-          <span className="ml-2">Loading dashboard...</span>
+      <AuthGuard>
+        <MainHeader />
+        <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+          <div className="container mx-auto py-8">
+            <div className="flex items-center justify-center h-64">
+              <Loader2 className="h-8 w-8 animate-spin text-white" />
+              <span className="ml-2 text-white">Loading dashboard...</span>
+            </div>
+          </div>
         </div>
-      </div>
+      </AuthGuard>
     )
   }
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
+    <AuthGuard>
+      <MainHeader />
+      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+        <div className="container mx-auto py-8 space-y-8">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -430,7 +440,9 @@ export default function AgentDashboard() {
             </Link>
           </CardContent>
         </Card>
+        </div>
       </div>
     </div>
+    </AuthGuard>
   )
 }

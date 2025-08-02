@@ -3,6 +3,7 @@
 import * as React from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 import { HelpCircle, Eye, EyeOff } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -32,59 +33,61 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#ff4e50] to-[#f9d423] px-4">
       <div className="w-full max-w-md space-y-8">
         {/* Logo */}
         <div className="text-center">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <HelpCircle className="h-10 w-10 text-primary" />
-            <span className="text-3xl font-bold">QuickDesk</span>
+            <HelpCircle className="h-10 w-10 text-[#f9d423]" />
+            <span className="text-3xl font-bold text-white">QuickDesk</span>
           </div>
-          <h1 className="text-2xl font-semibold">Welcome back</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-2xl font-semibold text-white">Welcome back</h1>
+          <p className="text-white/70">
             Sign in to your account to access your support tickets
           </p>
         </div>
 
         {/* Login Form */}
-        <Card>
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
           <CardHeader>
-            <CardTitle>Sign In</CardTitle>
+            <CardTitle className="text-white">Sign In</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <div className="p-3 bg-destructive/10 border border-destructive/20 rounded-md">
-                  <p className="text-sm text-destructive">{error}</p>
+                <div className="p-3 bg-red-500/20 border border-red-500/30 rounded-md">
+                  <p className="text-sm text-red-300">{error}</p>
                 </div>
               )}
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">Username</label>
+                <label className="text-sm font-medium text-white">Username</label>
                 <Input
                   type="text"
                   placeholder="Enter your username"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                   required
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium">Password</label>
+                <label className="text-sm font-medium text-white">Password</label>
                 <div className="relative">
                   <Input
                     type={showPassword ? "text" : "password"}
                     placeholder="Enter your password"
                     value={formData.password}
                     onChange={(e) => setFormData({...formData, password: e.target.value})}
+                    className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                     required
                   />
                   <Button
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="absolute right-0 top-0 h-full px-3"
+                    className="absolute right-0 top-0 h-full px-3 text-white/60 hover:text-white hover:bg-white/10"
                     onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? (
@@ -97,16 +100,16 @@ export default function LoginPage() {
               </div>
 
               <div className="flex items-center justify-between">
-                <label className="flex items-center space-x-2 text-sm">
-                  <input type="checkbox" className="rounded" />
+                <label className="flex items-center space-x-2 text-sm text-white">
+                  <input type="checkbox" className="rounded bg-white/10 border-white/20" />
                   <span>Remember me</span>
                 </label>
-                <Button variant="link" className="px-0 text-sm">
+                <Button variant="link" className="px-0 text-sm text-[#f9d423] hover:text-[#f9d423]/80">
                   Forgot password?
                 </Button>
               </div>
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full bg-white text-[#ff4e50] hover:bg-white/90 font-semibold" disabled={isLoading}>
                 {isLoading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
@@ -115,32 +118,32 @@ export default function LoginPage() {
 
         {/* Sign Up Link */}
         <div className="text-center">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-white/70">
             Don't have an account?{" "}
-            <Button variant="link" className="px-0 text-sm">
+            <Link href="/signup" className="text-[#f9d423] hover:text-[#f9d423]/80 font-medium">
               Sign up here
-            </Button>
+            </Link>
           </p>
         </div>
 
         {/* Demo Credentials */}
-        <Card className="bg-muted/50">
+        <Card className="backdrop-blur-md bg-[#0f2027]/60 border-white/20">
           <CardContent className="pt-6">
             <div className="text-center space-y-3">
-              <p className="text-sm font-medium">Demo Credentials</p>
-              <div className="text-xs text-muted-foreground space-y-2">
-                <div className="border rounded p-2 bg-background">
-                  <p className="font-medium">Customer:</p>
+              <p className="text-sm font-medium text-white">Demo Credentials</p>
+              <div className="text-xs text-white/60 space-y-2">
+                <div className="border border-white/20 rounded p-2 bg-white/5">
+                  <p className="font-medium text-white">Customer:</p>
                   <p>Username: customer</p>
                   <p>Password: password</p>
                 </div>
-                <div className="border rounded p-2 bg-background">
-                  <p className="font-medium">Agent:</p>
+                <div className="border border-white/20 rounded p-2 bg-white/5">
+                  <p className="font-medium text-white">Agent:</p>
                   <p>Username: agent</p>
                   <p>Password: password</p>
                 </div>
-                <div className="border rounded p-2 bg-background">
-                  <p className="font-medium">Admin:</p>
+                <div className="border border-white/20 rounded p-2 bg-white/5">
+                  <p className="font-medium text-white">Admin:</p>
                   <p>Username: admin</p>
                   <p>Password: password</p>
                 </div>
