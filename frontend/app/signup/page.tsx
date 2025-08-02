@@ -283,7 +283,11 @@ export default function SignUpPage() {
                 </label>
               </div>
 
-              <Button type="submit" className="w-full bg-white text-[#ff4e50] hover:bg-white/90 font-semibold" disabled={isLoading}>
+              <Button 
+                type="submit" 
+                className="w-full bg-white text-[#ff4e50] hover:bg-white/90 font-semibold disabled:bg-white/50 disabled:text-[#ff4e50]/50 disabled:cursor-not-allowed" 
+                disabled={isLoading || !acceptTerms}
+              >
                 {isLoading ? "Creating Account..." : "Create Account"}
               </Button>
             </form>
