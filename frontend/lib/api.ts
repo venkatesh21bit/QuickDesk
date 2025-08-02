@@ -96,7 +96,33 @@ export const apiRequest = async (
     
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      
+      // Handle specific validation errors from Django REST Framework
+      if (response.status === 400 && errorData) {
+        // Extract field-specific errors
+        const fieldErrors: string[] = [];
+        
+        if (errorData.username) {
+          fieldErrors.push(`Username: ${Array.isArray(errorData.username) ? errorData.username[0] : errorData.username}`);
+        }
+        if (errorData.email) {
+          fieldErrors.push(`Email: ${Array.isArray(errorData.email) ? errorData.email[0] : errorData.email}`);
+        }
+        if (errorData.password) {
+          fieldErrors.push(`Password: ${Array.isArray(errorData.password) ? errorData.password[0] : errorData.password}`);
+        }
+        if (errorData.non_field_errors) {
+          fieldErrors.push(Array.isArray(errorData.non_field_errors) ? errorData.non_field_errors[0] : errorData.non_field_errors);
+        }
+        
+        if (fieldErrors.length > 0) {
+          const error = new Error(fieldErrors.join('; '));
+          (error as any).validationErrors = errorData;
+          throw error;
+        }
+      }
+      
+      throw new Error(errorData.message || errorData.detail || `HTTP error! status: ${response.status}`);
     }
     
     const contentType = response.headers.get('content-type');
