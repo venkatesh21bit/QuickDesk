@@ -8,8 +8,8 @@ from django.urls import path, include
 
 urlpatterns = [
     # Core app URLs
-    path('', include('apps.core.urls')),
+    path('', include('app.core.urls')),
     
     # Add your app URLs here
-    # Example: path('users/', include('apps.users.urls')),
+    # Example: path('users/', include('app.users.urls')),
 ]
