@@ -30,6 +30,7 @@ urlpatterns = [
     
     # Dashboard and search endpoints
     path('dashboard/stats/', views.DashboardStatsView.as_view(), name='dashboard-stats'),
+    path('admin/stats/', views.AdminStatsView.as_view(), name='admin-stats'),
     path('tickets/search/', views.TicketSearchView.as_view(), name='ticket-search'),
     
     # Include router URLs

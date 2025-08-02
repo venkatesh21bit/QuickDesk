@@ -1,5 +1,5 @@
 const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://backend-production-4ce6.up.railway.app/api'
+  ? 'https://attractive-transformation-production-c76f.up.railway.app/api'
   : 'http://localhost:8000/api';
 
 export const API_ENDPOINTS = {

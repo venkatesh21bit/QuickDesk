@@ -2,6 +2,5 @@
 builder = "nixpacks"
 
 [deploy]
-startCommand = "python manage.py migrate && python manage.py populate_defaults && gunicorn config.wsgi --log-file -"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10

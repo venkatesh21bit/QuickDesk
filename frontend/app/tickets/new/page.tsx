@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -11,36 +11,59 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Upload } from "lucide-react"
 import { AuthGuard } from "@/components/auth-guard"
 import { MainHeader } from "@/components/main-header"
-
-const categories = [
-  "Technical Support",
-  "Account Issues", 
-  "Software Request",
-  "Hardware Issues",
-  "Access Problems",
-  "General Inquiry"
-]
-
-const priorities = [
-  { value: "low", label: "Low", color: "secondary" },
-  { value: "medium", label: "Medium", color: "warning" },
-  { value: "high", label: "High", color: "destructive" }
-]
+import { useAuth } from "@/contexts/auth-context"
+import { api } from "@/lib/api"
 
 export default function CreateTicketPage() {
   const router = useRouter()
+  const { user } = useAuth()
+  const [categories, setCategories] = useState<any[]>([])
+  const [priorities, setPriorities] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     subject: "",
     description: "",
     category: "",
-    priority: "medium"
+    priority: ""
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    loadData()
+  }, [])
+
+  const loadData = async () => {
+    try {
+      const [categoriesData, prioritiesData] = await Promise.all([
+        api.getCategories(),
+        api.getPriorities()
+      ])
+      setCategories(categoriesData.results || categoriesData)
+      setPriorities(prioritiesData.results || prioritiesData)
+    } catch (error) {
+      console.error("Failed to load data:", error)
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log("Ticket submitted:", formData)
-    router.push("/tickets")
+    setLoading(true)
+    
+    try {
+      const ticketData = {
+        subject: formData.subject,
+        description: formData.description,
+        category: formData.category,
+        priority: formData.priority
+      }
+      
+      await api.createTicket(ticketData)
+      router.push("/tickets")
+    } catch (error) {
+      console.error("Failed to create ticket:", error)
+      // TODO: Show error message to user
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -87,16 +110,16 @@ export default function CreateTicketPage() {
               <div className="grid grid-cols-2 gap-2">
                 {categories.map((category) => (
                   <button
-                    key={category}
+                    key={category.id}
                     type="button"
-                    onClick={() => setFormData({...formData, category})}
+                    onClick={() => setFormData({...formData, category: category.id})}
                     className={`p-3 text-sm border rounded-lg text-left transition-colors ${
-                      formData.category === category
+                      formData.category === category.id
                         ? "border-[#f9d423] bg-[#f9d423]/20 text-white"
                         : "border-white/20 text-white hover:bg-white/10"
                     }`}
                   >
-                    {category}
+                    {category.name}
                   </button>
                 ))}
               </div>
@@ -105,19 +128,21 @@ export default function CreateTicketPage() {
             {/* Priority */}
             <div className="space-y-2">
               <label className="text-sm font-medium text-white">Priority *</label>
-              <div className="flex space-x-2">
+              <div className="flex space-x-2 flex-wrap">
                 {priorities.map((priority) => (
                   <button
-                    key={priority.value}
+                    key={priority.id}
                     type="button"
-                    onClick={() => setFormData({...formData, priority: priority.value})}
+                    onClick={() => setFormData({...formData, priority: priority.id})}
                     className={`flex items-center space-x-2 p-2 border rounded-lg transition-colors ${
-                      formData.priority === priority.value
+                      formData.priority === priority.id
                         ? "border-[#f9d423] bg-[#f9d423]/20"
                         : "border-white/20 hover:bg-white/10"
                     }`}
                   >
-                    <Badge variant={priority.color as any}>{priority.label}</Badge>
+                    <Badge variant="outline" className="text-white border-white/40">
+                      {priority.name}
+                    </Badge>
                   </button>
                 ))}
               </div>
@@ -151,8 +176,12 @@ export default function CreateTicketPage() {
 
             {/* Submit */}
             <div className="flex space-x-3">
-              <Button type="submit" className="flex-1 bg-white text-[#ff4e50] hover:bg-white/90 font-semibold">
-                Submit Ticket
+              <Button 
+                type="submit" 
+                className="flex-1 bg-white text-[#ff4e50] hover:bg-white/90 font-semibold"
+                disabled={loading || !formData.subject || !formData.description || !formData.category || !formData.priority}
+              >
+                {loading ? "Creating Ticket..." : "Submit Ticket"}
               </Button>
               <Button type="button" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20" onClick={() => router.back()}>
                 Cancel
