@@ -27,7 +27,7 @@ export default function LoginPage() {
     if (success) {
       router.push("/")
     } else {
-      setError("Invalid email or password")
+      setError("Invalid username or password")
     }
   }
 
@@ -60,10 +60,10 @@ export default function LoginPage() {
               )}
               
               <div className="space-y-2">
-                <label className="text-sm font-medium">Email</label>
+                <label className="text-sm font-medium">Username</label>
                 <Input
-                  type="email"
-                  placeholder="Enter your email"
+                  type="text"
+                  placeholder="Enter your username"
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   required
@@ -131,18 +131,18 @@ export default function LoginPage() {
               <div className="text-xs text-muted-foreground space-y-2">
                 <div className="border rounded p-2 bg-background">
                   <p className="font-medium">Customer:</p>
-                  <p>Email: customer@quickdesk.com</p>
-                  <p>Password: demo123</p>
+                  <p>Username: customer</p>
+                  <p>Password: password</p>
                 </div>
                 <div className="border rounded p-2 bg-background">
                   <p className="font-medium">Agent:</p>
-                  <p>Email: agent@quickdesk.com</p>
-                  <p>Password: demo123</p>
+                  <p>Username: agent</p>
+                  <p>Password: password</p>
                 </div>
                 <div className="border rounded p-2 bg-background">
                   <p className="font-medium">Admin:</p>
-                  <p>Email: admin@quickdesk.com</p>
-                  <p>Password: demo123</p>
+                  <p>Username: admin</p>
+                  <p>Password: password</p>
                 </div>
               </div>
             </div>

@@ -102,20 +102,28 @@ export function MainHeader() {
 
           {/* User Menu */}
           <div className="flex items-center space-x-2">
-            {user && (
-              <div className="text-sm text-muted-foreground">
-                {user.name} ({user.role})
-              </div>
+            {user ? (
+              <>
+                <div className="text-sm text-muted-foreground">
+                  {user.first_name || user.username} ({user.role})
+                </div>
+                <Button variant="ghost" size="icon">
+                  <User className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="icon">
+                  <Settings className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="icon" onClick={logout}>
+                  <LogOut className="h-5 w-5" />
+                </Button>
+              </>
+            ) : (
+              <Link href="/login">
+                <Button variant="default">
+                  Sign In
+                </Button>
+              </Link>
             )}
-            <Button variant="ghost" size="icon">
-              <User className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon">
-              <Settings className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" onClick={logout}>
-              <LogOut className="h-5 w-5" />
-            </Button>
           </div>
         </div>
       </div>
