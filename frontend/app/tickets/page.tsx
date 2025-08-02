@@ -176,69 +176,70 @@ export default function TicketsPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">
-            {user.role === "customer" ? "My Tickets" : "All Tickets"}
-          </h1>
-          <p className="text-muted-foreground">
-            View and manage your support tickets
-          </p>
-        </div>
-        <Link href="/tickets/new">
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Create Ticket
-          </Button>
-        </Link>
-      </div>
-
-      {/* Filters */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Filters & Search</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {/* Search */}
-          <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search tickets..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9"
-            />
+    <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+      <div className="container mx-auto py-8 space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-white">
+              {user.role === "customer" ? "My Tickets" : "All Tickets"}
+            </h1>
+            <p className="text-white/70">
+              View and manage your support tickets
+            </p>
           </div>
+          <Link href="/tickets/new">
+            <Button className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold">
+              <Plus className="h-4 w-4 mr-2" />
+              Create Ticket
+            </Button>
+          </Link>
+        </div>
 
-          {/* Filter Row */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div>
-              <label className="text-sm font-medium mb-2 block">Status</label>
-              <select 
-                className="w-full p-2 border rounded-md"
+        {/* Filters */}
+        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-lg text-white">Filters & Search</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-3 h-4 w-4 text-white/60" />
+              <Input
+                placeholder="Search tickets..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-[#f9d423]"
+              />
+            </div>
+
+            {/* Filter Row */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <label className="text-sm font-medium mb-2 block text-white">Status</label>
+                <select 
+                  className="w-full p-2 border rounded-md bg-white/10 border-white/20 text-white focus:border-[#f9d423]"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
-                <option value="all">All Status</option>
-                <option value="open">Open</option>
-                <option value="in_progress">In Progress</option>
-                <option value="resolved">Resolved</option>
-                <option value="closed">Closed</option>
+                <option value="all" className="text-gray-900">All Status</option>
+                <option value="open" className="text-gray-900">Open</option>
+                <option value="in_progress" className="text-gray-900">In Progress</option>
+                <option value="resolved" className="text-gray-900">Resolved</option>
+                <option value="closed" className="text-gray-900">Closed</option>
               </select>
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-2 block">Priority</label>
+              <label className="text-sm font-medium mb-2 block text-white">Priority</label>
               <select 
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md bg-white/10 border-white/20 text-white focus:border-[#f9d423]"
                 value={priorityFilter}
                 onChange={(e) => setPriorityFilter(e.target.value)}
               >
-                <option value="all">All Priorities</option>
+                <option value="all" className="text-gray-900">All Priorities</option>
                 {priorities.map(priority => (
-                  <option key={priority.id} value={priority.name}>
+                  <option key={priority.id} value={priority.name} className="text-gray-900">
                     {priority.name.charAt(0).toUpperCase() + priority.name.slice(1)}
                   </option>
                 ))}
@@ -246,15 +247,15 @@ export default function TicketsPage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-2 block">Category</label>
+              <label className="text-sm font-medium mb-2 block text-white">Category</label>
               <select 
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md bg-white/10 border-white/20 text-white focus:border-[#f9d423]"
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
               >
-                <option value="all">All Categories</option>
+                <option value="all" className="text-gray-900">All Categories</option>
                 {categories.map(category => (
-                  <option key={category.id} value={category.name}>
+                  <option key={category.id} value={category.name} className="text-gray-900">
                     {category.name}
                   </option>
                 ))}
@@ -262,17 +263,17 @@ export default function TicketsPage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-2 block">Sort By</label>
+              <label className="text-sm font-medium mb-2 block text-white">Sort By</label>
               <select 
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border rounded-md bg-white/10 border-white/20 text-white focus:border-[#f9d423]"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
               >
-                <option value="-created_at">Most Recent</option>
-                <option value="created_at">Oldest First</option>
-                <option value="-upvotes">Most Voted</option>
-                <option value="-priority__level">Highest Priority</option>
-                <option value="-updated_at">Recently Updated</option>
+                <option value="-created_at" className="text-gray-900">Most Recent</option>
+                <option value="created_at" className="text-gray-900">Oldest First</option>
+                <option value="-upvotes" className="text-gray-900">Most Voted</option>
+                <option value="-priority__level" className="text-gray-900">Highest Priority</option>
+                <option value="-updated_at" className="text-gray-900">Recently Updated</option>
               </select>
             </div>
           </div>
@@ -282,13 +283,15 @@ export default function TicketsPage() {
       {/* Tickets List */}
       <div className="space-y-4">
         {loading ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin" />
-            <span className="ml-2">Loading tickets...</span>
-          </div>
+          <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+            <CardContent className="flex items-center justify-center py-12">
+              <Loader2 className="h-8 w-8 animate-spin text-[#f9d423]" />
+              <span className="ml-2 text-white">Loading tickets...</span>
+            </CardContent>
+          </Card>
         ) : tickets.length > 0 ? (
           tickets.map((ticket) => (
-            <Card key={ticket.id} className="hover:shadow-md transition-shadow">
+            <Card key={ticket.id} className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl hover:bg-[#0f2027]/90 transition-all">
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1 space-y-3">
@@ -296,7 +299,7 @@ export default function TicketsPage() {
                     <div className="flex items-center space-x-3 flex-wrap">
                       <Link 
                         href={`/tickets/${ticket.id}`}
-                        className="text-lg font-semibold hover:text-primary"
+                        className="text-lg font-semibold text-white hover:text-[#f9d423] transition-colors"
                       >
                         {ticket.subject}
                       </Link>
@@ -309,16 +312,17 @@ export default function TicketsPage() {
                       <Badge 
                         variant="outline" 
                         style={{ borderColor: ticket.category_color, color: ticket.category_color }}
+                        className="bg-white/10"
                       >
                         {ticket.category_name}
                       </Badge>
                       {ticket.is_internal && (
-                        <Badge variant="secondary">Internal</Badge>
+                        <Badge variant="secondary" className="bg-white/20 text-white">Internal</Badge>
                       )}
                     </div>
 
                     {/* Meta */}
-                    <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+                    <div className="flex items-center space-x-4 text-xs text-white/60">
                       <span>{ticket.ticket_number}</span>
                       <span>•</span>
                       <span>by {ticket.created_by_username}</span>
@@ -342,6 +346,7 @@ export default function TicketsPage() {
                         variant={ticket.user_vote === "up" ? "default" : "ghost"} 
                         size="sm"
                         onClick={() => handleVote(ticket.id, "up")}
+                        className={ticket.user_vote === "up" ? "bg-[#f9d423] text-[#0f2027] hover:bg-[#f9d423]/90" : "text-white hover:bg-white/10 hover:text-[#f9d423]"}
                       >
                         <ThumbsUp className="h-4 w-4 mr-1" />
                         {ticket.upvotes}
@@ -350,11 +355,12 @@ export default function TicketsPage() {
                         variant={ticket.user_vote === "down" ? "default" : "ghost"} 
                         size="sm"
                         onClick={() => handleVote(ticket.id, "down")}
+                        className={ticket.user_vote === "down" ? "bg-red-500 text-white hover:bg-red-600" : "text-white hover:bg-white/10 hover:text-red-400"}
                       >
                         <ThumbsDown className="h-4 w-4 mr-1" />
                         {ticket.downvotes}
                       </Button>
-                      <Button variant="ghost" size="sm">
+                      <Button variant="ghost" size="sm" className="text-white hover:bg-white/10 hover:text-[#f9d423]">
                         <MessageCircle className="h-4 w-4 mr-1" />
                         {ticket.comments_count}
                       </Button>
@@ -365,11 +371,11 @@ export default function TicketsPage() {
             </Card>
           ))
         ) : (
-          <Card>
+          <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
             <CardContent className="py-12 text-center">
-              <p className="text-muted-foreground mb-4">No tickets found</p>
+              <p className="text-white/70 mb-4">No tickets found</p>
               <Link href="/tickets/new">
-                <Button>
+                <Button className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold">
                   <Plus className="h-4 w-4 mr-2" />
                   Create your first ticket
                 </Button>
@@ -386,6 +392,7 @@ export default function TicketsPage() {
             variant="outline" 
             disabled={!pagination.previous}
             onClick={() => loadTickets(pagination.currentPage - 1)}
+            className="bg-white/10 border-white/20 text-white hover:bg-white/20 disabled:bg-white/5 disabled:text-white/40"
           >
             Previous
           </Button>
@@ -397,6 +404,10 @@ export default function TicketsPage() {
                 key={pageNum}
                 variant={pagination.currentPage === pageNum ? "default" : "outline"}
                 onClick={() => loadTickets(pageNum)}
+                className={pagination.currentPage === pageNum 
+                  ? "bg-[#f9d423] text-[#0f2027] hover:bg-[#f9d423]/90" 
+                  : "bg-white/10 border-white/20 text-white hover:bg-white/20"
+                }
               >
                 {pageNum}
               </Button>
@@ -407,11 +418,13 @@ export default function TicketsPage() {
             variant="outline"
             disabled={!pagination.next}
             onClick={() => loadTickets(pagination.currentPage + 1)}
+            className="bg-white/10 border-white/20 text-white hover:bg-white/20 disabled:bg-white/5 disabled:text-white/40"
           >
             Next
           </Button>
         </div>
       )}
+      </div>
     </div>
   )
 }
