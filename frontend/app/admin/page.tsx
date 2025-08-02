@@ -68,22 +68,30 @@ export default function AdminPage() {
 
   return (
     <AuthGuard>
-      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423] relative overflow-hidden">
+        {/* Floating 3D Elements Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-40 h-40 bg-white/10 rounded-full floating-3d blur-sm"></div>
+          <div className="absolute top-60 right-20 w-32 h-32 bg-white/5 rounded-full floating-3d" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-40 left-1/3 w-24 h-24 bg-white/10 rounded-full floating-3d" style={{animationDelay: '4s'}}></div>
+          <div className="absolute top-1/2 right-1/4 w-16 h-16 bg-white/5 rounded-full floating-3d" style={{animationDelay: '6s'}}></div>
+        </div>
+        
         <MainHeader />
         
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-8 relative z-10">
           <div className="space-y-8">
             {/* Header */}
-            <div className="text-center space-y-4">
-              <h1 className="text-4xl font-bold text-white">Admin Dashboard</h1>
-              <p className="text-white/80 text-lg">
+            <div className="text-center space-y-4 slide-in-3d">
+              <h1 className="text-4xl font-bold text-white drop-shadow-lg">Admin Dashboard</h1>
+              <p className="text-white/80 text-lg drop-shadow-md">
                 Welcome back, {user?.username}. Here's what's happening with your system.
               </p>
             </div>
 
             {/* Quick Stats */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white">
+              <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white glass-3d">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-white">Total Users</CardTitle>
                   <Users className="h-4 w-4 text-[#f9d423]" />
@@ -93,7 +101,7 @@ export default function AdminPage() {
                 </CardContent>
               </Card>
               
-              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white">
+              <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white glass-3d">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-white">Total Tickets</CardTitle>
                   <Database className="h-4 w-4 text-[#f9d423]" />
@@ -103,7 +111,7 @@ export default function AdminPage() {
                 </CardContent>
               </Card>
               
-              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white">
+              <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white glass-3d">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-white">Active Agents</CardTitle>
                   <UserCheck className="h-4 w-4 text-[#f9d423]" />
@@ -113,7 +121,7 @@ export default function AdminPage() {
                 </CardContent>
               </Card>
               
-              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white">
+              <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white glass-3d">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-white">Categories</CardTitle>
                   <Shield className="h-4 w-4 text-[#f9d423]" />
@@ -123,7 +131,7 @@ export default function AdminPage() {
                 </CardContent>
               </Card>
               
-              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white">
+              <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white glass-3d">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-white">Avg Resolution</CardTitle>
                   <Clock className="h-4 w-4 text-[#f9d423]" />
@@ -133,7 +141,7 @@ export default function AdminPage() {
                 </CardContent>
               </Card>
               
-              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white">
+              <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white glass-3d">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-white">Satisfaction</CardTitle>
                   <TrendingUp className="h-4 w-4 text-[#f9d423]" />
@@ -146,10 +154,10 @@ export default function AdminPage() {
 
             {/* Quick Actions */}
             <div className="grid gap-6 md:grid-cols-3">
-              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 hover:bg-[#0f2027]/90 transition-all cursor-pointer group">
+              <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border border-white/20 hover:bg-[#0f2027]/90 transition-all cursor-pointer group glass-3d">
                 <CardHeader>
                   <div className="flex items-center space-x-3">
-                    <Users className="h-8 w-8 text-[#f9d423] group-hover:scale-110 transition-transform" />
+                    <Users className="h-8 w-8 text-[#f9d423] group-hover:scale-110 transition-transform duration-300" />
                     <div>
                       <CardTitle className="text-lg text-white">User Management</CardTitle>
                       <p className="text-sm text-white/60">
@@ -160,10 +168,10 @@ export default function AdminPage() {
                 </CardHeader>
               </Card>
               
-              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 hover:bg-[#0f2027]/90 transition-all cursor-pointer group">
+              <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border border-white/20 hover:bg-[#0f2027]/90 transition-all cursor-pointer group glass-3d">
                 <CardHeader>
                   <div className="flex items-center space-x-3">
-                    <BarChart3 className="h-8 w-8 text-[#f9d423] group-hover:scale-110 transition-transform" />
+                    <BarChart3 className="h-8 w-8 text-[#f9d423] group-hover:scale-110 transition-transform duration-300" />
                     <div>
                       <CardTitle className="text-lg text-white">Analytics</CardTitle>
                       <p className="text-sm text-white/60">
@@ -174,10 +182,10 @@ export default function AdminPage() {
                 </CardHeader>
               </Card>
               
-              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 hover:bg-[#0f2027]/90 transition-all cursor-pointer group">
+              <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border border-white/20 hover:bg-[#0f2027]/90 transition-all cursor-pointer group glass-3d">
                 <CardHeader>
                   <div className="flex items-center space-x-3">
-                    <Settings className="h-8 w-8 text-[#f9d423] group-hover:scale-110 transition-transform" />
+                    <Settings className="h-8 w-8 text-[#f9d423] group-hover:scale-110 transition-transform duration-300" />
                     <div>
                       <CardTitle className="text-lg text-white">System Settings</CardTitle>
                       <p className="text-sm text-white/60">

@@ -195,23 +195,32 @@ export default function AgentDashboard() {
   return (
     <AuthGuard>
       <MainHeader />
-      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
-        <div className="container mx-auto py-8 space-y-8">
+      <div className="min-h-screen bg-gradient-to-br from-[#0f2027] via-[#203a43] to-[#2c5364] relative overflow-hidden">
+        {/* Floating 3D Elements Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-32 h-32 bg-[#f9d423]/10 rounded-full floating-3d blur-sm"></div>
+          <div className="absolute top-40 right-20 w-24 h-24 bg-[#ff4e50]/10 rounded-full floating-3d" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-40 left-1/4 w-20 h-20 bg-[#f9d423]/5 rounded-full floating-3d" style={{animationDelay: '4s'}}></div>
+          <div className="absolute top-1/2 right-1/3 w-16 h-16 bg-[#ff4e50]/5 rounded-full floating-3d" style={{animationDelay: '6s'}}></div>
+          <div className="absolute bottom-20 right-10 w-28 h-28 bg-[#f9d423]/10 rounded-full floating-3d" style={{animationDelay: '8s'}}></div>
+        </div>
+        
+        <div className="container mx-auto py-8 space-y-8 relative z-10">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between slide-in-3d">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white">Agent Dashboard</h1>
-          <p className="text-white/70">
+          <h1 className="text-3xl font-bold tracking-tight text-white drop-shadow-lg">Agent Dashboard</h1>
+          <p className="text-white/70 drop-shadow-sm">
             Manage and resolve customer support tickets.
           </p>
         </div>
         <div className="flex items-center space-x-2">
-          <Button variant="outline" size="sm" className="border-white/50 text-white hover:bg-white/20 hover:text-white bg-white/10">
+          <Button variant="outline" size="sm" className="border-white/50 text-white hover:bg-white/20 hover:text-white bg-white/10 button-3d">
             <Bell className="h-4 w-4 mr-2" />
             Notifications
           </Button>
           <Link href="/tickets">
-            <Button className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold">
+            <Button className="bg-gradient-to-r from-[#ff4e50] to-[#f9d423] hover:from-[#f9d423] hover:to-[#ff4e50] text-white font-semibold button-3d">
               <Ticket className="h-4 w-4 mr-2" />
               All Tickets
             </Button>
@@ -220,8 +229,8 @@ export default function AgentDashboard() {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5 slide-in-3d" style={{animationDelay: '0.2s'}}>
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">Assigned</CardTitle>
             <UserCheck className="h-4 w-4 text-[#f9d423]" />
@@ -230,7 +239,7 @@ export default function AgentDashboard() {
             <div className="text-2xl font-bold text-white">{stats.assigned_tickets}</div>
           </CardContent>
         </Card>
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">In Progress</CardTitle>
             <Clock className="h-4 w-4 text-[#f9d423]" />
@@ -239,7 +248,7 @@ export default function AgentDashboard() {
             <div className="text-2xl font-bold text-white">{stats.in_progress_tickets}</div>
           </CardContent>
         </Card>
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">Resolved</CardTitle>
             <CheckCircle className="h-4 w-4 text-[#f9d423]" />
@@ -248,7 +257,7 @@ export default function AgentDashboard() {
             <div className="text-2xl font-bold text-white">{stats.resolved_tickets}</div>
           </CardContent>
         </Card>
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">Unassigned</CardTitle>
             <AlertTriangle className="h-4 w-4 text-[#f9d423]" />
@@ -257,7 +266,7 @@ export default function AgentDashboard() {
             <div className="text-2xl font-bold text-white">{stats.unassigned_tickets}</div>
           </CardContent>
         </Card>
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">Total</CardTitle>
             <Ticket className="h-4 w-4 text-[#f9d423]" />
@@ -269,7 +278,7 @@ export default function AgentDashboard() {
       </div>
 
       {/* Filters and Search */}
-      <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+      <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d slide-in-3d" style={{animationDelay: '0.4s'}}>
         <CardHeader>
           <CardTitle className="text-white">All Tickets</CardTitle>
         </CardHeader>
@@ -281,7 +290,7 @@ export default function AgentDashboard() {
               placeholder="Search tickets..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-[#f9d423]"
+              className="input-3d pl-9 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-[#f9d423]"
             />
           </div>
 
@@ -290,7 +299,7 @@ export default function AgentDashboard() {
             <div className="flex items-center space-x-2">
               <label className="text-sm font-medium text-white">Status:</label>
               <select 
-                className="p-2 border rounded-md text-sm bg-white/10 border-white/20 text-white focus:border-[#f9d423]"
+                className="input-3d p-2 border rounded-md text-sm bg-white/10 border-white/20 text-white focus:border-[#f9d423]"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
@@ -305,7 +314,7 @@ export default function AgentDashboard() {
             <div className="flex items-center space-x-2">
               <label className="text-sm font-medium text-white">Priority:</label>
               <select 
-                className="p-2 border rounded-md text-sm bg-white/10 border-white/20 text-white focus:border-[#f9d423]"
+                className="input-3d p-2 border rounded-md text-sm bg-white/10 border-white/20 text-white focus:border-[#f9d423]"
                 value={priorityFilter}
                 onChange={(e) => setPriorityFilter(e.target.value)}
               >
@@ -321,10 +330,14 @@ export default function AgentDashboard() {
       </Card>
 
       {/* Tickets List */}
-      <div className="space-y-4">
+      <div className="space-y-4 slide-in-3d" style={{animationDelay: '0.6s'}}>
         {filteredTickets.length > 0 ? (
-          filteredTickets.map((ticket) => (
-            <Card key={ticket.id} className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl hover:bg-[#0f2027]/90 transition-all">
+          filteredTickets.map((ticket, index) => (
+            <Card 
+              key={ticket.id} 
+              className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d hover:bg-[#0f2027]/90 transition-all"
+              style={{animationDelay: `${0.8 + index * 0.1}s`}}
+            >
               <CardContent className="p-6">
                 <div className="flex items-start justify-between">
                   <div className="flex-1 space-y-3">
@@ -371,7 +384,7 @@ export default function AgentDashboard() {
                   <div className="flex flex-col space-y-2 ml-4">
                     <div className="flex items-center space-x-2">
                       <Link href={`/tickets/${ticket.id}`}>
-                        <Button size="sm" className="bg-white text-[#ff4e50] hover:bg-white/90">
+                        <Button size="sm" className="button-3d bg-gradient-to-r from-[#ff4e50] to-[#f9d423] hover:from-[#f9d423] hover:to-[#ff4e50] text-white">
                           View Details
                         </Button>
                       </Link>
@@ -382,7 +395,7 @@ export default function AgentDashboard() {
                           <Button 
                             size="sm" 
                             variant="outline"
-                            className="border-white/50 text-white hover:bg-white/20 hover:text-white bg-white/10"
+                            className="button-3d border-white/50 text-white hover:bg-white/20 hover:text-white bg-white/10"
                           >
                             <ChevronDown className="h-4 w-4 mr-1" />
                             Update Status

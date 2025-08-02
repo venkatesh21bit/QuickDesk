@@ -54,28 +54,32 @@ export function MainHeader() {
   const navigation = getNavigationForRole()
 
   return (
-    <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-[#0f2027]/95 border-b border-white/20">
+    <header className="sticky top-0 z-50 w-full navbar-3d backdrop-blur-md bg-[#0f2027]/95 border-b border-white/20">
       <div className="container flex h-16 items-center">
         {/* Logo */}
         <div className="mr-8">
-          <Link href="/" className="flex items-center space-x-2">
-            <HelpCircle className="h-8 w-8 text-[#f9d423]" />
-            <span className="text-xl font-bold text-white">QuickDesk</span>
+          <Link href="/" className="flex items-center space-x-2 group">
+            <HelpCircle className="h-8 w-8 text-[#f9d423] transition-transform group-hover:scale-110 group-hover:rotate-12" />
+            <span className="text-xl font-bold text-white drop-shadow-lg">QuickDesk</span>
           </Link>
         </div>
 
         {/* Navigation */}
         <nav className="flex items-center space-x-6 text-sm font-medium">
-          {navigation.map((item) => (
+          {navigation.map((item, index) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "transition-colors hover:text-[#f9d423]",
+                "transition-all duration-300 hover:text-[#f9d423] relative px-3 py-2 rounded-md",
+                "hover:shadow-lg hover:transform hover:scale-105",
                 pathname === item.href
-                  ? "text-[#f9d423]"
-                  : "text-white/80"
+                  ? "text-[#f9d423] bg-white/10 shadow-lg button-3d"
+                  : "text-white/80 hover:bg-white/10"
               )}
+              style={{
+                animationDelay: `${index * 0.1}s`
+              }}
             >
               {item.name}
             </Link>
@@ -85,11 +89,11 @@ export function MainHeader() {
         {/* Search */}
         <div className="ml-auto flex items-center space-x-4">
           <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-white/60" />
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-white/60 z-10" />
             <Input
               type="search"
               placeholder="Search tickets..."
-              className="w-64 pl-8 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-[#f9d423]"
+              className="w-64 pl-8 input-3d bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-[#f9d423] focus:shadow-lg"
             />
           </div>
 
@@ -97,26 +101,26 @@ export function MainHeader() {
           <div className="flex items-center space-x-2">
             {user ? (
               <>
-                <div className="text-sm text-white/70">
+                <div className="text-sm text-white/70 bg-white/10 px-3 py-1 rounded-lg badge-3d">
                   {user.first_name || user.username} ({user.role})
                 </div>
                 <Link href="/profile">
-                  <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-[#f9d423]">
+                  <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-[#f9d423] button-3d">
                     <User className="h-5 w-5" />
                   </Button>
                 </Link>
                 <Link href="/settings">
-                  <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-[#f9d423]">
+                  <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-[#f9d423] button-3d">
                     <Settings className="h-5 w-5" />
                   </Button>
                 </Link>
-                <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-[#f9d423]" onClick={logout}>
+                <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-[#f9d423] button-3d" onClick={logout}>
                   <LogOut className="h-5 w-5" />
                 </Button>
               </>
             ) : (
               <Link href="/login">
-                <Button className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold">
+                <Button className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold button-3d bounce-3d">
                   Sign In
                 </Button>
               </Link>

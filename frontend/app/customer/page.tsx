@@ -133,13 +133,10 @@ export default function CustomerDashboard() {
   if (authLoading || loading) {
     return (
       <AuthGuard>
-        <MainHeader />
-        <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
-          <div className="container mx-auto py-8">
-            <div className="flex items-center justify-center h-64">
-              <Loader2 className="h-8 w-8 animate-spin text-white" />
-              <span className="ml-2 text-white">Loading dashboard...</span>
-            </div>
+        <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423] flex items-center justify-center">
+          <div className="text-center space-y-4">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-white border-r-transparent mx-auto" />
+            <p className="text-white text-lg font-medium">Loading dashboard...</p>
           </div>
         </div>
       </AuthGuard>
@@ -148,19 +145,27 @@ export default function CustomerDashboard() {
 
   return (
     <AuthGuard>
-      <MainHeader />
-      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
-        <div className="container mx-auto py-8 space-y-8">
+      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423] relative overflow-hidden">
+        {/* Floating 3D Elements Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 left-10 w-36 h-36 bg-white/10 rounded-full floating-3d blur-sm"></div>
+          <div className="absolute top-40 right-20 w-28 h-28 bg-white/5 rounded-full floating-3d" style={{animationDelay: '2s'}}></div>
+          <div className="absolute bottom-40 left-1/4 w-20 h-20 bg-white/10 rounded-full floating-3d" style={{animationDelay: '4s'}}></div>
+        </div>
+        
+        <MainHeader />
+        
+        <div className="container mx-auto py-8 space-y-8 relative z-10">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between slide-in-3d">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white">Customer Dashboard</h1>
-          <p className="text-white/70">
+          <h1 className="text-3xl font-bold tracking-tight text-white drop-shadow-lg">Customer Dashboard</h1>
+          <p className="text-white/70 drop-shadow-md">
             Track your support tickets and get help when you need it.
           </p>
         </div>
         <Link href="/tickets/new">
-          <Button className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold">
+          <Button className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold button-3d bounce-3d">
             <Plus className="h-4 w-4 mr-2" />
             Create New Ticket
           </Button>
@@ -168,8 +173,8 @@ export default function CustomerDashboard() {
       </div>
 
       {/* Quick Stats */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">Total Tickets</CardTitle>
             <Ticket className="h-4 w-4 text-[#f9d423]" />
@@ -178,7 +183,7 @@ export default function CustomerDashboard() {
             <div className="text-2xl font-bold text-white">{stats.total_tickets}</div>
           </CardContent>
         </Card>
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">Open</CardTitle>
             <AlertTriangle className="h-4 w-4 text-[#f9d423]" />
@@ -187,7 +192,7 @@ export default function CustomerDashboard() {
             <div className="text-2xl font-bold text-white">{stats.open_tickets}</div>
           </CardContent>
         </Card>
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">In Progress</CardTitle>
             <Clock className="h-4 w-4 text-[#f9d423]" />
@@ -196,7 +201,7 @@ export default function CustomerDashboard() {
             <div className="text-2xl font-bold text-white">{stats.in_progress_tickets}</div>
           </CardContent>
         </Card>
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-white">Resolved</CardTitle>
             <CheckCircle className="h-4 w-4 text-[#f9d423]" />
@@ -208,7 +213,7 @@ export default function CustomerDashboard() {
       </div>
 
       {/* Recent Tickets */}
-      <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+      <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="text-white">Recent Tickets</CardTitle>
