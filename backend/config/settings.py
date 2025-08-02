@@ -164,6 +164,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -175,6 +176,9 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
         'rest_framework.filters.OrderingFilter',
     ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
 }
 
 # Custom User Model
@@ -183,14 +187,50 @@ AUTH_USER_MODEL = 'core.User'
 # CORS settings
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS', 
-    default='http://localhost:3000,http://127.0.0.1:3000'
+    default='http://localhost:3000,http://127.0.0.1:3000,https://quickdesk-production.up.railway.app,https://backend-production-4ce6.up.railway.app'
 ).split(',')
 
 CORS_ALLOW_CREDENTIALS = True
 
-# Additional CORS settings for development
+# Additional CORS settings for development and production
 if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
+else:
+    # Production CORS settings
+    CORS_ALLOWED_ORIGINS.extend([
+        'https://quickdesk-production.up.railway.app',
+        'https://backend-production-4ce6.up.railway.app',
+    ])
+
+# CSRF settings for production
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://quickdesk-production.up.railway.app',
+    'https://backend-production-4ce6.up.railway.app',
+]
+
+# Additional CORS headers
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 # Email settings
 EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
