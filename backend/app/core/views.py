@@ -25,7 +25,6 @@ from .serializers import (
     NotificationSerializer, DashboardStatsSerializer, TicketSearchSerializer
 )
 from .services import EmailService, NotificationService, TicketService
-from .services import TicketService, EmailService, NotificationService
 
 
 # ============================================================================
