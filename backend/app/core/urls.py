@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-# from rest_framework_nested import routers  # Temporarily disabled
+from rest_framework_nested import routers
 from . import views
 
 # Create the main router
@@ -13,10 +13,10 @@ router.register(r'tickets', views.TicketViewSet, basename='ticket')
 router.register(r'notifications', views.NotificationViewSet, basename='notification')
 router.register(r'admin/users', views.UserManagementViewSet, basename='user-management')
 
-# Create nested routers for ticket-related resources - TEMPORARILY DISABLED
-# tickets_router = routers.NestedDefaultRouter(router, r'tickets', lookup='ticket')
-# tickets_router.register(r'comments', views.TicketCommentViewSet, basename='ticket-comments')
-# tickets_router.register(r'attachments', views.TicketAttachmentViewSet, basename='ticket-attachments')
+# Create nested routers for ticket-related resources
+tickets_router = routers.NestedDefaultRouter(router, r'tickets', lookup='ticket')
+tickets_router.register(r'comments', views.TicketCommentViewSet, basename='ticket-comments')
+tickets_router.register(r'attachments', views.TicketAttachmentViewSet, basename='ticket-attachments')
 
 urlpatterns = [
     # API Root
@@ -34,5 +34,5 @@ urlpatterns = [
     
     # Include router URLs
     path('', include(router.urls)),
-    # path('', include(tickets_router.urls)),  # Temporarily disabled
+    path('', include(tickets_router.urls)),
 ]
