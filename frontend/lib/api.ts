@@ -17,6 +17,7 @@ export const API_ENDPOINTS = {
     CREATE: `${API_BASE_URL}/tickets/`,
     DETAIL: (id: string) => `${API_BASE_URL}/tickets/${id}/`,
     UPDATE: (id: string) => `${API_BASE_URL}/tickets/${id}/`,
+    UPDATE_STATUS: (id: string) => `${API_BASE_URL}/tickets/${id}/update_status/`,
     ASSIGN: (id: string) => `${API_BASE_URL}/tickets/${id}/assign/`,
     VOTE: (id: string) => `${API_BASE_URL}/tickets/${id}/vote/`,
     SEARCH: `${API_BASE_URL}/tickets/search/`,
@@ -158,6 +159,12 @@ export const api = {
     apiRequest(API_ENDPOINTS.TICKETS.UPDATE(id), {
       method: 'PUT',
       body: JSON.stringify(ticketData),
+    }),
+    
+  updateTicketStatus: (id: string, status: string) =>
+    apiRequest(API_ENDPOINTS.TICKETS.UPDATE_STATUS(id), {
+      method: 'POST',
+      body: JSON.stringify({ status }),
     }),
     
   assignTicket: (id: string, agentId: string) =>
