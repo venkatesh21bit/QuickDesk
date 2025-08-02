@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { ArrowLeft, Upload } from "lucide-react"
+import { AuthGuard } from "@/components/auth-guard"
+import { MainHeader } from "@/components/main-header"
 
 const categories = [
   "Technical Support",
@@ -42,42 +44,46 @@ export default function CreateTicketPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 max-w-2xl">
-      <div className="mb-6">
-        <Button 
-          variant="ghost" 
-          onClick={() => router.back()}
-          className="mb-4"
+    <AuthGuard>
+      <MainHeader />
+      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+        <div className="container mx-auto py-8 max-w-2xl">
+        <div className="mb-6">
+          <Button 
+            variant="ghost" 
+            onClick={() => router.back()}
+            className="mb-4 text-white hover:bg-white/10"
         >
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back
         </Button>
-        <h1 className="text-3xl font-bold">Create New Ticket</h1>
-        <p className="text-muted-foreground">
+        <h1 className="text-3xl font-bold text-white">Create New Ticket</h1>
+        <p className="text-white/90">
           Fill out the form below to submit your support request.
         </p>
       </div>
 
-      <Card>
+      <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
         <CardHeader>
-          <CardTitle>Ticket Details</CardTitle>
+          <CardTitle className="text-white">Ticket Details</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Subject */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Subject *</label>
+              <label className="text-sm font-medium text-white">Subject *</label>
               <Input
                 placeholder="Brief description of your issue"
                 value={formData.subject}
                 onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                className="bg-white/10 border-white/20 text-white placeholder:text-white/60"
                 required
               />
             </div>
 
             {/* Category */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Category *</label>
+              <label className="text-sm font-medium text-white">Category *</label>
               <div className="grid grid-cols-2 gap-2">
                 {categories.map((category) => (
                   <button
@@ -86,8 +92,8 @@ export default function CreateTicketPage() {
                     onClick={() => setFormData({...formData, category})}
                     className={`p-3 text-sm border rounded-lg text-left transition-colors ${
                       formData.category === category
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:bg-accent"
+                        ? "border-[#f9d423] bg-[#f9d423]/20 text-white"
+                        : "border-white/20 text-white hover:bg-white/10"
                     }`}
                   >
                     {category}
@@ -98,7 +104,7 @@ export default function CreateTicketPage() {
 
             {/* Priority */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Priority *</label>
+              <label className="text-sm font-medium text-white">Priority *</label>
               <div className="flex space-x-2">
                 {priorities.map((priority) => (
                   <button
@@ -107,8 +113,8 @@ export default function CreateTicketPage() {
                     onClick={() => setFormData({...formData, priority: priority.value})}
                     className={`flex items-center space-x-2 p-2 border rounded-lg transition-colors ${
                       formData.priority === priority.value
-                        ? "border-primary bg-primary/5"
-                        : "border-border hover:bg-accent"
+                        ? "border-[#f9d423] bg-[#f9d423]/20"
+                        : "border-white/20 hover:bg-white/10"
                     }`}
                   >
                     <Badge variant={priority.color as any}>{priority.label}</Badge>
@@ -119,10 +125,10 @@ export default function CreateTicketPage() {
 
             {/* Description */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Description *</label>
+              <label className="text-sm font-medium text-white">Description *</label>
               <Textarea
                 placeholder="Please provide detailed information about your issue..."
-                className="min-h-[120px]"
+                className="min-h-[120px] bg-white/10 border-white/20 text-white placeholder:text-white/60"
                 value={formData.description}
                 onChange={(e) => setFormData({...formData, description: e.target.value})}
                 required
@@ -131,13 +137,13 @@ export default function CreateTicketPage() {
 
             {/* File Upload */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Attachments (optional)</label>
-              <div className="border-2 border-dashed border-border rounded-lg p-6 text-center">
-                <Upload className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-                <p className="text-sm text-muted-foreground">
+              <label className="text-sm font-medium text-white">Attachments (optional)</label>
+              <div className="border-2 border-dashed border-white/20 rounded-lg p-6 text-center bg-white/5">
+                <Upload className="h-8 w-8 mx-auto text-[#f9d423] mb-2" />
+                <p className="text-sm text-white/70">
                   Drag and drop files here, or click to browse
                 </p>
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="text-xs text-white/60 mt-1">
                   Supported formats: PDF, DOC, JPG, PNG (Max 10MB)
                 </p>
               </div>
@@ -145,16 +151,18 @@ export default function CreateTicketPage() {
 
             {/* Submit */}
             <div className="flex space-x-3">
-              <Button type="submit" className="flex-1">
+              <Button type="submit" className="flex-1 bg-white text-[#ff4e50] hover:bg-white/90 font-semibold">
                 Submit Ticket
               </Button>
-              <Button type="button" variant="outline" onClick={() => router.back()}>
+              <Button type="button" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20" onClick={() => router.back()}>
                 Cancel
               </Button>
             </div>
           </form>
         </CardContent>
       </Card>
-    </div>
+        </div>
+      </div>
+    </AuthGuard>
   )
 }

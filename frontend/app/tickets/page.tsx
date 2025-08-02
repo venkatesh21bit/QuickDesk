@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
+import { AuthGuard } from "@/components/auth-guard"
+import { MainHeader } from "@/components/main-header"
 
 const mockTickets = [
   {
@@ -86,51 +88,54 @@ export default function TicketsPage() {
   }
 
   return (
-    <div className="container mx-auto py-8 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">My Tickets</h1>
-          <p className="text-muted-foreground">
-            View and manage your support tickets
-          </p>
-        </div>
-        <Link href="/tickets/new">
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
+    <AuthGuard>
+      <MainHeader />
+      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+        <div className="container mx-auto py-8 space-y-6">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-white">My Tickets</h1>
+            <p className="text-white/90">
+              View and manage your support tickets
+            </p>
+          </div>
+          <Link href="/tickets/new">
+            <Button className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold">
+              <Plus className="h-4 w-4 mr-2" />
             Create Ticket
           </Button>
         </Link>
       </div>
 
       {/* Filters */}
-      <Card>
+      <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
         <CardHeader>
-          <CardTitle className="text-lg">Filters & Search</CardTitle>
+          <CardTitle className="text-lg text-white">Filters & Search</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Search */}
           <div className="relative">
-            <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-3 h-4 w-4 text-white/60" />
             <Input
               placeholder="Search tickets..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-9"
+              className="pl-9 bg-white/10 border-white/20 text-white placeholder:text-white/60"
             />
           </div>
 
           {/* Filter Row */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label className="text-sm font-medium mb-2 block">Status</label>
+              <label className="text-sm font-medium mb-2 block text-white">Status</label>
               <select 
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border border-white/20 rounded-md bg-white/10 text-white"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
                 {statusOptions.map(option => (
-                  <option key={option} value={option}>
+                  <option key={option} value={option} className="bg-[#0f2027] text-white">
                     {option.charAt(0).toUpperCase() + option.slice(1)}
                   </option>
                 ))}
@@ -138,14 +143,14 @@ export default function TicketsPage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-2 block">Priority</label>
+              <label className="text-sm font-medium mb-2 block text-white">Priority</label>
               <select 
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border border-white/20 rounded-md bg-white/10 text-white"
                 value={priorityFilter}
                 onChange={(e) => setPriorityFilter(e.target.value)}
               >
                 {priorityOptions.map(option => (
-                  <option key={option} value={option}>
+                  <option key={option} value={option} className="bg-[#0f2027] text-white">
                     {option.charAt(0).toUpperCase() + option.slice(1)}
                   </option>
                 ))}
@@ -153,14 +158,14 @@ export default function TicketsPage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-2 block">Category</label>
+              <label className="text-sm font-medium mb-2 block text-white">Category</label>
               <select 
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border border-white/20 rounded-md bg-white/10 text-white"
                 value={categoryFilter}
                 onChange={(e) => setCategoryFilter(e.target.value)}
               >
                 {categoryOptions.map(option => (
-                  <option key={option} value={option}>
+                  <option key={option} value={option} className="bg-[#0f2027] text-white">
                     {option === "all" ? "All Categories" : option}
                   </option>
                 ))}
@@ -168,16 +173,16 @@ export default function TicketsPage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-2 block">Sort By</label>
+              <label className="text-sm font-medium mb-2 block text-white">Sort By</label>
               <select 
-                className="w-full p-2 border rounded-md"
+                className="w-full p-2 border border-white/20 rounded-md bg-white/10 text-white"
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
               >
-                <option value="recent">Most Recent</option>
-                <option value="oldest">Oldest First</option>
-                <option value="votes">Most Voted</option>
-                <option value="replies">Most Replied</option>
+                <option value="recent" className="bg-[#0f2027] text-white">Most Recent</option>
+                <option value="oldest" className="bg-[#0f2027] text-white">Oldest First</option>
+                <option value="votes" className="bg-[#0f2027] text-white">Most Voted</option>
+                <option value="replies" className="bg-[#0f2027] text-white">Most Replied</option>
               </select>
             </div>
           </div>
@@ -187,7 +192,7 @@ export default function TicketsPage() {
       {/* Tickets List */}
       <div className="space-y-4">
         {mockTickets.map((ticket) => (
-          <Card key={ticket.id} className="hover:shadow-md transition-shadow">
+          <Card key={ticket.id} className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl hover:bg-[#0f2027]/90 transition-all">
             <CardContent className="p-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1 space-y-3">
@@ -195,7 +200,7 @@ export default function TicketsPage() {
                   <div className="flex items-center space-x-3">
                     <Link 
                       href={`/tickets/${ticket.id}`}
-                      className="text-lg font-semibold hover:text-primary"
+                      className="text-lg font-semibold text-white hover:text-[#f9d423]"
                     >
                       {ticket.subject}
                     </Link>
@@ -208,12 +213,12 @@ export default function TicketsPage() {
                   </div>
 
                   {/* Description */}
-                  <p className="text-muted-foreground text-sm line-clamp-2">
+                  <p className="text-white/70 text-sm line-clamp-2">
                     {ticket.description}
                   </p>
 
                   {/* Meta */}
-                  <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+                  <div className="flex items-center space-x-4 text-xs text-white/60">
                     <span>{ticket.id}</span>
                     <span>•</span>
                     <span>{ticket.category}</span>
@@ -227,19 +232,19 @@ export default function TicketsPage() {
                 {/* Actions */}
                 <div className="flex flex-col items-end space-y-2 ml-4">
                   <div className="flex items-center space-x-2">
-                    <Button variant="ghost" size="sm">
-                      <ThumbsUp className="h-4 w-4 mr-1" />
+                    <Button variant="ghost" size="sm" className="text-white hover:bg-white/10">
+                      <ThumbsUp className="h-4 w-4 mr-1 text-[#f9d423]" />
                       {ticket.votes}
                     </Button>
-                    <Button variant="ghost" size="sm">
-                      <ThumbsDown className="h-4 w-4" />
+                    <Button variant="ghost" size="sm" className="text-white hover:bg-white/10">
+                      <ThumbsDown className="h-4 w-4 text-white/60" />
                     </Button>
-                    <Button variant="ghost" size="sm">
-                      <MessageCircle className="h-4 w-4 mr-1" />
+                    <Button variant="ghost" size="sm" className="text-white hover:bg-white/10">
+                      <MessageCircle className="h-4 w-4 mr-1 text-[#f9d423]" />
                       {ticket.replies}
                     </Button>
                   </div>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-white/60">
                     by {ticket.author}
                   </span>
                 </div>
@@ -251,12 +256,14 @@ export default function TicketsPage() {
 
       {/* Pagination */}
       <div className="flex items-center justify-center space-x-2">
-        <Button variant="outline" disabled>Previous</Button>
-        <Button variant="outline">1</Button>
-        <Button variant="outline">2</Button>
-        <Button variant="outline">3</Button>
-        <Button variant="outline">Next</Button>
+        <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20" disabled>Previous</Button>
+        <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">1</Button>
+        <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">2</Button>
+        <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">3</Button>
+        <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">Next</Button>
       </div>
-    </div>
+        </div>
+      </div>
+    </AuthGuard>
   )
 }

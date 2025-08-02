@@ -5,185 +5,183 @@ import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { AuthGuard } from "@/components/auth-guard"
+import { MainHeader } from "@/components/main-header"
 import { 
   Ticket, 
-  Plus, 
-  Search,
+  TrendingUp, 
   Clock, 
   CheckCircle, 
+  Users, 
   AlertTriangle,
   MessageSquare,
-  BookOpen,
-  TrendingUp,
-  Filter
+  Plus
 } from "lucide-react"
 
-const mockCustomerTickets = [
-  {
-    id: "TICK-001",
-    subject: "Cannot access email account",
-    status: "open",
-    priority: "high",
-    category: "Technical Support",
-    created: "2024-01-15T10:30:00Z",
-    updated: "2 hours ago",
-    replies: 3
-  },
-  {
-    id: "TICK-002", 
-    subject: "Software installation request",
-    status: "in-progress",
-    priority: "medium", 
-    category: "Software Request",
-    created: "2024-01-14T09:15:00Z",
-    updated: "1 day ago",
-    replies: 1
-  },
-  {
-    id: "TICK-003",
-    subject: "Password reset completed",
-    status: "resolved",
-    priority: "low",
-    category: "Account Issues",
-    created: "2024-01-12T16:20:00Z",
-    updated: "3 days ago",
-    replies: 2
-  }
-]
-
-export default function CustomerDashboard() {
-  const [searchTerm, setSearchTerm] = React.useState("")
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case "open": return "destructive"
-      case "in-progress": return "warning"
-      case "resolved": return "success"
-      case "closed": return "secondary"
-      default: return "secondary"
-    }
-  }
-
+export default function DashboardPage() {
   return (
-    <div className="container mx-auto py-8 space-y-8">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Customer Dashboard</h1>
-          <p className="text-muted-foreground">
-            Track your support tickets and get help when you need it.
-          </p>
+    <AuthGuard>
+      <MainHeader />
+      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+        <div className="container mx-auto py-8 space-y-8">
+        {/* Welcome Section */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-white">Dashboard</h1>
+            <p className="text-white/90">
+              Welcome back! Here's an overview of your support activity.
+            </p>
+          </div>
+          <Link href="/tickets/new">
+            <Button className="bg-white text-[#ff4e50] hover:bg-white/90 font-semibold shadow-lg hover:shadow-xl transition-all hover:scale-105">
+              <Plus className="h-4 w-4 mr-2" />
+              Create New Ticket
+            </Button>
+          </Link>
         </div>
-        <Link href="/tickets/new">
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Create New Ticket
-          </Button>
-        </Link>
-      </div>
 
-      {/* Quick Stats */}
-      <div className="grid gap-4 md:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Tickets</CardTitle>
-            <Ticket className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">12</div>
-            <p className="text-xs text-muted-foreground">All time</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Open</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">4</div>
-            <p className="text-xs text-muted-foreground">Awaiting response</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Resolved</CardTitle>
-            <CheckCircle className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">8</div>
-            <p className="text-xs text-muted-foreground">This month</p>
-          </CardContent>
-        </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Response</CardTitle>
-            <Clock className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">1.2h</div>
-            <p className="text-xs text-muted-foreground">Response time</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* My Tickets */}
-        <div className="lg:col-span-2 space-y-6">
-          <Card>
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>My Recent Tickets</CardTitle>
-                <Link href="/tickets">
-                  <Button variant="outline" size="sm">View All</Button>
-                </Link>
-              </div>
-              <div className="flex items-center space-x-2">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    placeholder="Search tickets..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-9"
-                  />
-                </div>
-                <Button variant="outline" size="icon">
-                  <Filter className="h-4 w-4" />
-                </Button>
-              </div>
+        {/* Quick Stats */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-white">My Tickets</CardTitle>
+              <Ticket className="h-4 w-4 text-[#f9d423]" />
             </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-white">12</div>
+              <p className="text-xs text-white/70">
+                +2 new this week
+              </p>
+            </CardContent>
+          </Card>
+          
+          <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-white">Open Issues</CardTitle>
+              <AlertTriangle className="h-4 w-4 text-[#f9d423]" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-white">4</div>
+              <p className="text-xs text-white/70">
+                Awaiting response
+              </p>
+            </CardContent>
+          </Card>
+          
+          <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-white">Resolved</CardTitle>
+              <CheckCircle className="h-4 w-4 text-[#f9d423]" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-white">8</div>
+              <p className="text-xs text-white/70">
+                This month
+              </p>
+            </CardContent>
+          </Card>
+          
+          <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-white">Response Time</CardTitle>
+              <Clock className="h-4 w-4 text-[#f9d423]" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-white">1.2h</div>
+              <p className="text-xs text-white/70">
+                Average response
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Main Content Grid */}
+        <div className="grid gap-6 lg:grid-cols-3">
+          {/* Recent Activity */}
+          <div className="lg:col-span-2 space-y-6">
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+              <CardHeader>
+                <CardTitle className="text-white">Recent Tickets</CardTitle>
+              </CardHeader>
             <CardContent className="space-y-4">
-              {mockCustomerTickets.map((ticket) => (
+              {[
+                {
+                  id: "TICK-001",
+                  title: "Cannot access email account",
+                  status: "open",
+                  priority: "high",
+                  updated: "2 hours ago",
+                  replies: 3
+                },
+                {
+                  id: "TICK-002", 
+                  title: "Software installation request",
+                  status: "in-progress",
+                  priority: "medium",
+                  updated: "1 day ago",
+                  replies: 1
+                },
+                {
+                  id: "TICK-003",
+                  title: "Password reset needed",
+                  status: "resolved",
+                  priority: "low",
+                  updated: "3 days ago",
+                  replies: 2
+                },
+                {
+                  id: "TICK-004",
+                  title: "VPN connection issues",
+                  status: "open", 
+                  priority: "medium",
+                  updated: "5 days ago",
+                  replies: 0
+                }
+              ].map((ticket) => (
                 <Link key={ticket.id} href={`/tickets/${ticket.id}`}>
-                  <div className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent transition-colors cursor-pointer">
+                  <div className="flex items-center justify-between p-4 border border-white/20 rounded-lg hover:bg-white/10 transition-colors cursor-pointer">
                     <div className="space-y-1">
                       <div className="flex items-center space-x-2">
-                        <p className="font-medium">{ticket.subject}</p>
-                        <Badge variant={getStatusColor(ticket.status) as any} className="text-xs">
+                        <p className="font-medium text-white">{ticket.title}</p>
+                        <Badge 
+                          variant={
+                            ticket.status === "open"
+                              ? "destructive"
+                              : ticket.status === "in-progress"
+                              ? "warning"
+                              : "success"
+                          }
+                          className="text-xs"
+                        >
                           {ticket.status}
                         </Badge>
                       </div>
-                      <div className="flex items-center space-x-3 text-xs text-muted-foreground">
+                      <div className="flex items-center space-x-3 text-xs text-white/70">
                         <span>{ticket.id}</span>
                         <span>•</span>
-                        <span>{ticket.category}</span>
+                        <span className="capitalize">{ticket.priority} priority</span>
                         <span>•</span>
                         <span>Updated {ticket.updated}</span>
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <div className="flex items-center text-xs text-muted-foreground">
-                        <MessageSquare className="h-3 w-3 mr-1" />
-                        {ticket.replies}
-                      </div>
+                      {ticket.replies > 0 && (
+                        <div className="flex items-center text-xs text-white/70">
+                          <MessageSquare className="h-3 w-3 mr-1" />
+                          {ticket.replies}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </Link>
               ))}
+              <div className="pt-2">
+                <Link href="/tickets">
+                  <Button variant="outline" className="w-full border-white/30 text-white hover:bg-white/10">
+                    View All Tickets
+                  </Button>
+                </Link>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -191,74 +189,80 @@ export default function CustomerDashboard() {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Quick Actions */}
-          <Card>
+          <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
             <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
+              <CardTitle className="text-white">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <Link href="/tickets/new">
-                <Button className="w-full justify-start">
+                <Button className="w-full justify-start bg-white text-[#ff4e50] hover:bg-white/90">
                   <Plus className="h-4 w-4 mr-2" />
                   Create New Ticket
                 </Button>
               </Link>
               <Link href="/tickets">
-                <Button variant="outline" className="w-full justify-start">
+                <Button variant="outline" className="w-full justify-start border-white/30 text-white hover:bg-white/10">
                   <Ticket className="h-4 w-4 mr-2" />
-                  View All My Tickets
+                  View My Tickets
                 </Button>
               </Link>
               <Link href="/knowledge-base">
-                <Button variant="outline" className="w-full justify-start">
-                  <BookOpen className="h-4 w-4 mr-2" />
+                <Button variant="outline" className="w-full justify-start border-white/30 text-white hover:bg-white/10">
+                  <MessageSquare className="h-4 w-4 mr-2" />
                   Browse Knowledge Base
                 </Button>
               </Link>
             </CardContent>
           </Card>
 
-          {/* Help Articles */}
-          <Card>
+          {/* Knowledge Base Articles */}
+          <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
             <CardHeader>
-              <CardTitle>Popular Help Articles</CardTitle>
+              <CardTitle className="text-white">Popular Articles</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {[
                 "How to reset your password",
-                "Setting up email on mobile",
-                "VPN connection guide",
-                "Software installation requests",
-                "Reporting security issues"
+                "Setting up VPN access",
+                "Email troubleshooting guide", 
+                "Software installation process",
+                "Hardware replacement requests"
               ].map((article, index) => (
-                <div key={index} className="p-3 border rounded-lg hover:bg-accent cursor-pointer transition-colors">
-                  <p className="text-sm">{article}</p>
+                <div key={index} className="p-3 border border-white/20 rounded-lg hover:bg-white/10 cursor-pointer transition-colors">
+                  <p className="text-sm text-white">{article}</p>
                 </div>
               ))}
             </CardContent>
           </Card>
 
           {/* System Status */}
-          <Card>
+          <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
             <CardHeader>
-              <CardTitle>System Status</CardTitle>
+              <CardTitle className="text-white">System Status</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm">Email Service</span>
+                <span className="text-sm text-white">Email Service</span>
                 <Badge variant="success">Operational</Badge>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm">VPN Gateway</span>
+                <span className="text-sm text-white">VPN Gateway</span>
                 <Badge variant="success">Operational</Badge>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-sm">Support Portal</span>
+                <span className="text-sm text-white">File Server</span>
+                <Badge variant="warning">Maintenance</Badge>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-white">Support Portal</span>
                 <Badge variant="success">Operational</Badge>
               </div>
             </CardContent>
           </Card>
         </div>
       </div>
+      </div>
     </div>
+    </AuthGuard>
   )
 }

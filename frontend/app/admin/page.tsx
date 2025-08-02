@@ -6,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { AuthGuard } from "@/components/auth-guard"
+import { MainHeader } from "@/components/main-header"
 import { 
   Users, 
   Settings, 
@@ -52,29 +54,30 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = React.useState("overview")
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-          <p className="text-muted-foreground">
-            Manage users, categories, and monitor system performance.
-          </p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Button variant="outline">
-            <BarChart3 className="h-4 w-4 mr-2" />
-            Analytics
-          </Button>
-          <Button>
-            <Settings className="h-4 w-4 mr-2" />
-            Settings
-          </Button>
-        </div>
-      </div>
-
-      {/* Navigation Tabs */}
-      <div className="border-b">
+    <AuthGuard>
+      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+        <MainHeader />
+        <div className="container mx-auto py-8 space-y-8">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-white">Admin Dashboard</h1>
+            <p className="text-white/90">
+              Manage users, categories, and monitor system performance.
+            </p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <Button variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
+              <BarChart3 className="h-4 w-4 mr-2 text-[#f9d423]" />
+              Analytics
+            </Button>
+            <Button className="bg-white text-[#ff4e50] hover:bg-white/90">
+              <Settings className="h-4 w-4 mr-2" />
+              Settings
+            </Button>
+          </div>
+        </div>      {/* Navigation Tabs */}
+      <div className="border-b border-white/20">
         <nav className="-mb-px flex space-x-8">
           {[
             { id: "overview", label: "Overview", icon: BarChart3 },
@@ -85,10 +88,10 @@ export default function AdminDashboard() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center space-x-2 py-2 px-1 border-b-2 font-medium text-sm ${
+              className={`flex items-center space-x-2 py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
                 activeTab === tab.id
-                  ? "border-primary text-primary"
-                  : "border-transparent text-muted-foreground hover:text-foreground hover:border-gray-300"
+                  ? "border-[#f9d423] text-[#f9d423]"
+                  : "border-transparent text-white/70 hover:text-white hover:border-white/30"
               }`}
             >
               <tab.icon className="h-4 w-4" />
@@ -103,102 +106,102 @@ export default function AdminDashboard() {
         <div className="space-y-6">
           {/* Quick Stats */}
           <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
-            <Card>
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium text-white">Total Users</CardTitle>
+                <Users className="h-4 w-4 text-[#f9d423]" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{mockAdminStats.totalUsers}</div>
-                <p className="text-xs text-muted-foreground">+12 this month</p>
+                <div className="text-2xl font-bold text-white">{mockAdminStats.totalUsers}</div>
+                <p className="text-xs text-white/60">+12 this month</p>
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Tickets</CardTitle>
-                <AlertTriangle className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium text-white">Total Tickets</CardTitle>
+                <AlertTriangle className="h-4 w-4 text-[#f9d423]" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{mockAdminStats.totalTickets}</div>
-                <p className="text-xs text-muted-foreground">+89 this week</p>
+                <div className="text-2xl font-bold text-white">{mockAdminStats.totalTickets}</div>
+                <p className="text-xs text-white/60">+89 this week</p>
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Active Agents</CardTitle>
-                <UserCheck className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium text-white">Active Agents</CardTitle>
+                <UserCheck className="h-4 w-4 text-[#f9d423]" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{mockAdminStats.activeAgents}</div>
-                <p className="text-xs text-muted-foreground">Online now</p>
+                <div className="text-2xl font-bold text-white">{mockAdminStats.activeAgents}</div>
+                <p className="text-xs text-white/60">Online now</p>
               </CardContent>
             </Card>
             
-            <Card>
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Categories</CardTitle>
-                <Database className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium text-white">Categories</CardTitle>
+                <Database className="h-4 w-4 text-[#f9d423]" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{mockAdminStats.categories}</div>
-                <p className="text-xs text-muted-foreground">Active categories</p>
+                <div className="text-2xl font-bold text-white">{mockAdminStats.categories}</div>
+                <p className="text-xs text-white/60">Active categories</p>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Avg Resolution</CardTitle>
-                <Clock className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium text-white">Avg Resolution</CardTitle>
+                <Clock className="h-4 w-4 text-[#f9d423]" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{mockAdminStats.avgResolutionTime}</div>
-                <p className="text-xs text-muted-foreground">15% faster</p>
+                <div className="text-2xl font-bold text-white">{mockAdminStats.avgResolutionTime}</div>
+                <p className="text-xs text-white/60">15% faster</p>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Satisfaction</CardTitle>
-                <CheckCircle className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium text-white">Satisfaction</CardTitle>
+                <CheckCircle className="h-4 w-4 text-[#f9d423]" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{mockAdminStats.satisfactionRate}</div>
-                <p className="text-xs text-muted-foreground">+2% this month</p>
+                <div className="text-2xl font-bold text-white">{mockAdminStats.satisfactionRate}</div>
+                <p className="text-xs text-white/60">+2% this month</p>
               </CardContent>
             </Card>
           </div>
 
           {/* System Health */}
           <div className="grid gap-6 lg:grid-cols-2">
-            <Card>
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
               <CardHeader>
-                <CardTitle>System Health</CardTitle>
+                <CardTitle className="text-white">System Health</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm">Database</span>
+                  <span className="text-sm text-white">Database</span>
                   <Badge variant="success">Healthy</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm">Email Service</span>
+                  <span className="text-sm text-white">Email Service</span>
                   <Badge variant="success">Operational</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm">File Storage</span>
+                  <span className="text-sm text-white">File Storage</span>
                   <Badge variant="warning">80% Full</Badge>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-sm">API Response</span>
+                  <span className="text-sm text-white">API Response</span>
                   <Badge variant="success">125ms avg</Badge>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
               <CardHeader>
-                <CardTitle>Recent Admin Actions</CardTitle>
+                <CardTitle className="text-white">Recent Admin Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 {[
@@ -208,10 +211,10 @@ export default function AdminDashboard() {
                   { action: "Updated SLA", detail: "Response time: 2h → 1h", time: "1 day ago" }
                 ].map((activity, index) => (
                   <div key={index} className="text-sm">
-                    <p>
-                      <span className="font-medium">{activity.action}:</span> {activity.detail}
+                    <p className="text-white">
+                      <span className="font-medium text-[#f9d423]">{activity.action}:</span> {activity.detail}
                     </p>
-                    <p className="text-xs text-muted-foreground">{activity.time}</p>
+                    <p className="text-xs text-white/60">{activity.time}</p>
                   </div>
                 ))}
               </CardContent>
@@ -226,32 +229,32 @@ export default function AdminDashboard() {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
               <div className="relative">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute left-3 top-3 h-4 w-4 text-white/60" />
                 <Input
                   placeholder="Search users..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-9 w-64"
+                  className="pl-9 w-64 bg-white/10 border-white/20 text-white placeholder:text-white/60"
                 />
               </div>
             </div>
-            <Button>
+            <Button className="bg-white text-[#ff4e50] hover:bg-white/90">
               <Plus className="h-4 w-4 mr-2" />
               Add User
             </Button>
           </div>
 
-          <Card>
+          <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
             <CardHeader>
-              <CardTitle>Users</CardTitle>
+              <CardTitle className="text-white">Users</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {mockUsers.map((user) => (
-                  <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div key={user.id} className="flex items-center justify-between p-4 border border-white/20 rounded-lg bg-white/5">
                     <div className="space-y-1">
                       <div className="flex items-center space-x-2">
-                        <p className="font-medium">{user.name}</p>
+                        <p className="font-medium text-white">{user.name}</p>
                         <Badge variant={user.role === "agent" ? "info" : "secondary"}>
                           {user.role}
                         </Badge>
@@ -259,17 +262,17 @@ export default function AdminDashboard() {
                           {user.status}
                         </Badge>
                       </div>
-                      <div className="flex items-center space-x-3 text-xs text-muted-foreground">
+                      <div className="flex items-center space-x-3 text-xs text-white/60">
                         <span>{user.email}</span>
                         <span>•</span>
                         <span>{user.tickets} tickets</span>
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
                         <Edit className="h-4 w-4" />
                       </Button>
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
                     </div>
@@ -285,28 +288,28 @@ export default function AdminDashboard() {
       {activeTab === "categories" && (
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Ticket Categories</h2>
-            <Button>
+            <h2 className="text-xl font-semibold text-white">Ticket Categories</h2>
+            <Button className="bg-white text-[#ff4e50] hover:bg-white/90">
               <Plus className="h-4 w-4 mr-2" />
               Add Category
             </Button>
           </div>
 
-          <Card>
+          <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
             <CardContent className="pt-6">
               <div className="space-y-4">
                 {mockCategories.map((category) => (
-                  <div key={category.id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div key={category.id} className="flex items-center justify-between p-4 border border-white/20 rounded-lg bg-white/5">
                     <div className="space-y-1">
-                      <p className="font-medium">{category.name}</p>
-                      <p className="text-sm text-muted-foreground">{category.description}</p>
-                      <p className="text-xs text-muted-foreground">{category.tickets} tickets</p>
+                      <p className="font-medium text-white">{category.name}</p>
+                      <p className="text-sm text-white/70">{category.description}</p>
+                      <p className="text-xs text-white/60">{category.tickets} tickets</p>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
                         <Edit className="h-4 w-4" />
                       </Button>
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" className="bg-white/10 border-white/20 text-white hover:bg-white/20">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
@@ -322,52 +325,54 @@ export default function AdminDashboard() {
       {activeTab === "analytics" && (
         <div className="space-y-6">
           <div className="grid gap-6 lg:grid-cols-2">
-            <Card>
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
               <CardHeader>
-                <CardTitle>Ticket Volume Trends</CardTitle>
+                <CardTitle className="text-white">Ticket Volume Trends</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-64 flex items-center justify-center bg-muted rounded">
-                  <p className="text-muted-foreground">Chart would be displayed here</p>
+                <div className="h-64 flex items-center justify-center bg-white/5 border border-white/20 rounded">
+                  <p className="text-white/60">Chart would be displayed here</p>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
               <CardHeader>
-                <CardTitle>Resolution Time Analytics</CardTitle>
+                <CardTitle className="text-white">Resolution Time Analytics</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-64 flex items-center justify-center bg-muted rounded">
-                  <p className="text-muted-foreground">Chart would be displayed here</p>
+                <div className="h-64 flex items-center justify-center bg-white/5 border border-white/20 rounded">
+                  <p className="text-white/60">Chart would be displayed here</p>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
               <CardHeader>
-                <CardTitle>Agent Performance</CardTitle>
+                <CardTitle className="text-white">Agent Performance</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-64 flex items-center justify-center bg-muted rounded">
-                  <p className="text-muted-foreground">Chart would be displayed here</p>
+                <div className="h-64 flex items-center justify-center bg-white/5 border border-white/20 rounded">
+                  <p className="text-white/60">Chart would be displayed here</p>
                 </div>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
               <CardHeader>
-                <CardTitle>Customer Satisfaction</CardTitle>
+                <CardTitle className="text-white">Customer Satisfaction</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-64 flex items-center justify-center bg-muted rounded">
-                  <p className="text-muted-foreground">Chart would be displayed here</p>
+                <div className="h-64 flex items-center justify-center bg-white/5 border border-white/20 rounded">
+                  <p className="text-white/60">Chart would be displayed here</p>
                 </div>
               </CardContent>
             </Card>
           </div>
         </div>
       )}
-    </div>
+        </div>
+      </div>
+    </AuthGuard>
   )
 }
