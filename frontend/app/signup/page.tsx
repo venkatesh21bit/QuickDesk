@@ -12,7 +12,7 @@ import { useAuth } from "@/contexts/auth-context"
 
 export default function SignUpPage() {
   const router = useRouter()
-  const { register, isLoading } = useAuth()
+  const { register, isLoading, error: authError } = useAuth()
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -28,6 +28,26 @@ export default function SignUpPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState("")
   const [acceptTerms, setAcceptTerms] = useState(false)
+
+  // Update local error when auth error changes
+  React.useEffect(() => {
+    if (authError) {
+      // Handle specific validation errors
+      const errorMessage = authError
+      
+      if (errorMessage.toLowerCase().includes('username') && (errorMessage.toLowerCase().includes('already exists') || errorMessage.toLowerCase().includes('already taken'))) {
+        setError("This username is already taken. Please choose a different username.")
+      } else if (errorMessage.toLowerCase().includes('email') && errorMessage.toLowerCase().includes('already exists')) {
+        setError("An account with this email already exists. Please use a different email or try logging in.")
+      } else if (errorMessage.toLowerCase().includes('user with this email already exists')) {
+        setError("An account with this email already exists. Please use a different email or try logging in.")
+      } else if (errorMessage.toLowerCase().includes('user with this username already exists')) {
+        setError("This username is already taken. Please choose a different username.")
+      } else {
+        setError(errorMessage)
+      }
+    }
+  }, [authError])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -52,9 +72,8 @@ export default function SignUpPage() {
     const success = await register(formData)
     if (success) {
       router.push("/")
-    } else {
-      setError("Registration failed. Please try again.")
     }
+    // Error will be handled by the useEffect above
   }
 
   const departments = [
@@ -94,7 +113,7 @@ export default function SignUpPage() {
         </div>
 
         {/* Sign Up Form */}
-        <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
+        <Card className="card-3d backdrop-blur-md bg-[#0f2027]/80 border-white/20 glass-3d">
           <CardHeader>
             <CardTitle className="text-white">Sign Up</CardTitle>
           </CardHeader>
@@ -293,7 +312,7 @@ export default function SignUpPage() {
 
               <Button 
                 type="submit" 
-                className="w-full bg-white text-[#ff4e50] hover:bg-white/90 font-semibold disabled:bg-white/50 disabled:text-[#ff4e50]/50 disabled:cursor-not-allowed" 
+                className="w-full bg-gradient-to-r from-[#ff4e50] to-[#f9d423] hover:from-[#f9d423] hover:to-[#ff4e50] text-white font-semibold button-3d disabled:opacity-50 disabled:cursor-not-allowed" 
                 disabled={isLoading || !acceptTerms}
               >
                 {isLoading ? "Creating Account..." : "Create Account"}
