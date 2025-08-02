@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-1l^weu7!$y&!!(d5m9!**
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,backend-production-4ce6.up.railway.app,quickdesk-production.up.railway.app').split(',')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1,attractive-transformation-production-c76f.up.railway.app,quickdesk-production.up.railway.app').split(',')
 
 
 # Application definition
@@ -187,7 +187,7 @@ AUTH_USER_MODEL = 'core.User'
 # CORS settings
 CORS_ALLOWED_ORIGINS = config(
     'CORS_ALLOWED_ORIGINS', 
-    default='http://localhost:3000,http://127.0.0.1:3000,https://quickdesk-production.up.railway.app,https://backend-production-4ce6.up.railway.app'
+    default='http://localhost:3000,http://127.0.0.1:3000,https://quickdesk-production.up.railway.app,https://attractive-transformation-production-c76f.up.railway.app'
 ).split(',')
 
 CORS_ALLOW_CREDENTIALS = True
@@ -199,7 +199,7 @@ else:
     # Production CORS settings
     CORS_ALLOWED_ORIGINS.extend([
         'https://quickdesk-production.up.railway.app',
-        'https://backend-production-4ce6.up.railway.app',
+        'https://attractive-transformation-production-c76f.up.railway.app',
     ])
 
 # CSRF settings for production
