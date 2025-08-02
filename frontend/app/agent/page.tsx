@@ -382,7 +382,7 @@ export default function AgentDashboard() {
                           <Button 
                             size="sm" 
                             variant="outline"
-                            className="border-white/30 text-white hover:bg-white/10"
+                            className="border-white/50 text-white hover:bg-white/20 hover:text-white bg-white/10"
                           >
                             <ChevronDown className="h-4 w-4 mr-1" />
                             Update Status
@@ -429,7 +429,7 @@ export default function AgentDashboard() {
                           size="sm" 
                           variant="outline"
                           onClick={() => handleAssignTicket(ticket.id)}
-                          className="border-white/30 text-white hover:bg-white/10"
+                          className="border-white/50 text-white hover:bg-white/20 hover:text-white bg-white/10"
                         >
                           Assign to Me
                         </Button>

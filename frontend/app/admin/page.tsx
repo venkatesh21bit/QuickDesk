@@ -1,13 +1,7 @@
 "use client"
 
-import * as React from "react"
 import { useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import { 
   Users, 
   Settings, 
@@ -15,19 +9,13 @@ import {
   Shield, 
   Database,
   TrendingUp,
-  AlertTriangle,
-  CheckCircle,
   Clock,
-  UserCheck,
-  Plus,
-  Search,
-  Edit,
-  Trash2,
-  MoreHorizontal,
-  Loader2
+  UserCheck
 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { api } from "@/lib/api"
+import { AuthGuard } from "@/components/auth-guard"
+import { MainHeader } from "@/components/main-header"
 
 interface AdminStats {
   total_users: number
@@ -38,393 +26,171 @@ interface AdminStats {
   satisfaction_rate: string
 }
 
-interface User {
-  id: string
-  username: string
-  email: string
-  role: string
-  is_active: boolean
-  ticket_count?: number
-  date_joined: string
-}
-
-interface Category {
-  id: string
-  name: string
-  description: string
-  color: string
-  ticket_count?: number
-}
-
-export default function AdminDashboard() {
-  const { user, isLoading: authLoading } = useAuth()
-  const router = useRouter()
-  const [searchTerm, setSearchTerm] = useState("")
-  const [activeTab, setActiveTab] = useState("overview")
+export default function AdminPage() {
+  const { user } = useAuth()
+  const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState<AdminStats>({
     total_users: 0,
     total_tickets: 0,
     active_agents: 0,
     total_categories: 0,
-    avg_resolution_time: "0h",
+    avg_resolution_time: "0h 0m",
     satisfaction_rate: "0%"
   })
-  const [users, setUsers] = useState<User[]>([])
-  const [categories, setCategories] = useState<Category[]>([])
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!authLoading && (!user || user.role !== "admin")) {
-      router.push("/login")
-      return
-    }
+    fetchStats()
+  }, [])
 
-    if (user && user.role === "admin") {
-      loadDashboardData()
-    }
-  }, [user, authLoading, router])
-
-  const loadDashboardData = async () => {
-    setLoading(true)
+  const fetchStats = async () => {
     try {
-      const [statsData, usersData, categoriesData] = await Promise.all([
-        api.getAdminStats(),
-        api.getUsers(),
-        api.getCategories()
-      ])
-      
-      setStats(statsData)
-      setUsers(usersData.results || usersData)
-      setCategories(categoriesData.results || categoriesData)
+      const response = await api.getAdminStats()
+      setStats(response)
     } catch (error) {
-      console.error("Failed to load admin dashboard data:", error)
+      console.error("Error fetching stats:", error)
     } finally {
       setLoading(false)
     }
   }
 
-  const handleRoleChange = async (userId: string, newRole: string) => {
-    try {
-      await api.changeUserRole(userId, newRole)
-      // Reload users after role change
-      const usersData = await api.getUsers()
-      setUsers(usersData.results || usersData)
-    } catch (error) {
-      console.error("Failed to change user role:", error)
-    }
-  }
-
-  const filteredUsers = users.filter(u =>
-    u.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    u.email.toLowerCase().includes(searchTerm.toLowerCase())
-  )
-
-  const filteredCategories = categories.filter(c =>
-    c.name.toLowerCase().includes(searchTerm.toLowerCase())
-  )
-
-  if (authLoading || loading) {
+  if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
-        <div className="container mx-auto py-8">
-          <div className="flex items-center justify-center h-64">
-            <Loader2 className="h-8 w-8 animate-spin text-white" />
-            <span className="ml-2 text-white">Loading admin dashboard...</span>
+      <AuthGuard>
+        <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423] flex items-center justify-center">
+          <div className="text-center space-y-4">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-white border-r-transparent mx-auto" />
+            <p className="text-white text-lg font-medium">Loading Admin Dashboard...</p>
           </div>
         </div>
-      </div>
+      </AuthGuard>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
-      <div className="container mx-auto py-8 space-y-8">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white">Admin Dashboard</h1>
-          <p className="text-white/70">
-            System administration and management overview.
-          </p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Button variant="outline" size="sm" className="border-white/30 text-white hover:bg-white/10">
-            <Settings className="h-4 w-4 mr-2" />
-            System Settings
-          </Button>
-          <Button variant="outline" size="sm" className="border-white/30 text-white hover:bg-white/10">
-            <BarChart3 className="h-4 w-4 mr-2" />
-            Reports
-          </Button>
-        </div>
-      </div>
-
-      {/* Navigation Tabs */}
-      <div className="flex space-x-1 border-b">
-        <button 
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-            activeTab === "overview" 
-              ? "border-primary text-primary" 
-              : "border-transparent text-muted-foreground hover:text-foreground"
-          }`}
-          onClick={() => setActiveTab("overview")}
-        >
-          Overview
-        </button>
-        <button 
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-            activeTab === "users" 
-              ? "border-primary text-primary" 
-              : "border-transparent text-muted-foreground hover:text-foreground"
-          }`}
-          onClick={() => setActiveTab("users")}
-        >
-          Users
-        </button>
-        <button 
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-            activeTab === "categories" 
-              ? "border-primary text-primary" 
-              : "border-transparent text-muted-foreground hover:text-foreground"
-          }`}
-          onClick={() => setActiveTab("categories")}
-        >
-          Categories
-        </button>
-      </div>
-
-      {/* Overview Tab */}
-      {activeTab === "overview" && (
-        <div className="space-y-6">
-          {/* Quick Stats */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-6">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{stats.total_users}</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Total Tickets</CardTitle>
-                <Database className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{stats.total_tickets}</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Active Agents</CardTitle>
-                <UserCheck className="h-4 w-4 text-primary" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{stats.active_agents}</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Categories</CardTitle>
-                <Shield className="h-4 w-4 text-muted-foreground" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{stats.total_categories}</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Avg Resolution</CardTitle>
-                <Clock className="h-4 w-4 text-warning" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{stats.avg_resolution_time}</div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">Satisfaction</CardTitle>
-                <TrendingUp className="h-4 w-4 text-success" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{stats.satisfaction_rate}</div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="grid gap-4 md:grid-cols-3">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardHeader>
-                <div className="flex items-center space-x-3">
-                  <Users className="h-8 w-8 text-primary" />
-                  <div>
-                    <CardTitle className="text-lg">User Management</CardTitle>
-                    <p className="text-sm text-muted-foreground">
-                      Manage user accounts and permissions
-                    </p>
-                  </div>
-                </div>
-              </CardHeader>
-            </Card>
-            
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardHeader>
-                <div className="flex items-center space-x-3">
-                  <BarChart3 className="h-8 w-8 text-primary" />
-                  <div>
-                    <CardTitle className="text-lg">Analytics</CardTitle>
-                    <p className="text-sm text-muted-foreground">
-                      View detailed system analytics
-                    </p>
-                  </div>
-                </div>
-              </CardHeader>
-            </Card>
-            
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardHeader>
-                <div className="flex items-center space-x-3">
-                  <Settings className="h-8 w-8 text-primary" />
-                  <div>
-                    <CardTitle className="text-lg">System Settings</CardTitle>
-                    <p className="text-sm text-muted-foreground">
-                      Configure system preferences
-                    </p>
-                  </div>
-                </div>
-              </CardHeader>
-            </Card>
-          </div>
-        </div>
-      )}
-
-      {/* Users Tab */}
-      {activeTab === "users" && (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search users..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-9 w-64"
-              />
+    <AuthGuard>
+      <div className="min-h-screen bg-gradient-to-br from-[#ff4e50] to-[#f9d423]">
+        <MainHeader />
+        
+        <div className="container mx-auto px-4 py-8">
+          <div className="space-y-8">
+            {/* Header */}
+            <div className="text-center space-y-4">
+              <h1 className="text-4xl font-bold text-white">Admin Dashboard</h1>
+              <p className="text-white/80 text-lg">
+                Welcome back, {user?.username}. Here's what's happening with your system.
+              </p>
             </div>
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              Add User
-            </Button>
-          </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Users ({filteredUsers.length})</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {filteredUsers.map((user) => (
-                  <div key={user.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="space-y-1">
-                      <div className="flex items-center space-x-3">
-                        <h4 className="font-medium">{user.username}</h4>
-                        <Badge variant={user.role === "admin" ? "destructive" : user.role === "agent" ? "default" : "secondary"}>
-                          {user.role}
-                        </Badge>
-                        <Badge variant={user.is_active ? "success" : "secondary"}>
-                          {user.is_active ? "Active" : "Inactive"}
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{user.email}</p>
-                      <p className="text-xs text-muted-foreground">
-                        Joined {new Date(user.date_joined).toLocaleDateString()}
-                        {user.ticket_count !== undefined && ` • ${user.ticket_count} tickets`}
+            {/* Quick Stats */}
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-white">Total Users</CardTitle>
+                  <Users className="h-4 w-4 text-[#f9d423]" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-white">{stats.total_users}</div>
+                </CardContent>
+              </Card>
+              
+              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-white">Total Tickets</CardTitle>
+                  <Database className="h-4 w-4 text-[#f9d423]" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-white">{stats.total_tickets}</div>
+                </CardContent>
+              </Card>
+              
+              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-white">Active Agents</CardTitle>
+                  <UserCheck className="h-4 w-4 text-[#f9d423]" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-white">{stats.active_agents}</div>
+                </CardContent>
+              </Card>
+              
+              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-white">Categories</CardTitle>
+                  <Shield className="h-4 w-4 text-[#f9d423]" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-white">{stats.total_categories}</div>
+                </CardContent>
+              </Card>
+              
+              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-white">Avg Resolution</CardTitle>
+                  <Clock className="h-4 w-4 text-[#f9d423]" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-white">{stats.avg_resolution_time}</div>
+                </CardContent>
+              </Card>
+              
+              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 text-white">
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium text-white">Satisfaction</CardTitle>
+                  <TrendingUp className="h-4 w-4 text-[#f9d423]" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold text-white">{stats.satisfaction_rate}</div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="grid gap-6 md:grid-cols-3">
+              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 hover:bg-[#0f2027]/90 transition-all cursor-pointer group">
+                <CardHeader>
+                  <div className="flex items-center space-x-3">
+                    <Users className="h-8 w-8 text-[#f9d423] group-hover:scale-110 transition-transform" />
+                    <div>
+                      <CardTitle className="text-lg text-white">User Management</CardTitle>
+                      <p className="text-sm text-white/60">
+                        Manage user accounts and permissions
                       </p>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <select 
-                        className="p-1 text-xs border rounded"
-                        value={user.role}
-                        onChange={(e) => handleRoleChange(user.id, e.target.value)}
-                      >
-                        <option value="customer">Customer</option>
-                        <option value="agent">Agent</option>
-                        <option value="admin">Admin</option>
-                      </select>
-                      <Button variant="outline" size="sm">
-                        <Edit className="h-3 w-3" />
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <MoreHorizontal className="h-3 w-3" />
-                      </Button>
+                  </div>
+                </CardHeader>
+              </Card>
+              
+              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 hover:bg-[#0f2027]/90 transition-all cursor-pointer group">
+                <CardHeader>
+                  <div className="flex items-center space-x-3">
+                    <BarChart3 className="h-8 w-8 text-[#f9d423] group-hover:scale-110 transition-transform" />
+                    <div>
+                      <CardTitle className="text-lg text-white">Analytics</CardTitle>
+                      <p className="text-sm text-white/60">
+                        View detailed system analytics
+                      </p>
                     </div>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      )}
-
-      {/* Categories Tab */}
-      {activeTab === "categories" && (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <div className="relative">
-              <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search categories..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-9 w-64"
-              />
+                </CardHeader>
+              </Card>
+              
+              <Card className="backdrop-blur-md bg-[#0f2027]/80 border border-white/20 hover:bg-[#0f2027]/90 transition-all cursor-pointer group">
+                <CardHeader>
+                  <div className="flex items-center space-x-3">
+                    <Settings className="h-8 w-8 text-[#f9d423] group-hover:scale-110 transition-transform" />
+                    <div>
+                      <CardTitle className="text-lg text-white">System Settings</CardTitle>
+                      <p className="text-sm text-white/60">
+                        Configure system preferences
+                      </p>
+                    </div>
+                  </div>
+                </CardHeader>
+              </Card>
             </div>
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Category
-            </Button>
           </div>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Categories ({filteredCategories.length})</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {filteredCategories.map((category) => (
-                  <div key={category.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div className="space-y-1">
-                      <div className="flex items-center space-x-3">
-                        <div 
-                          className="w-4 h-4 rounded-full"
-                          style={{ backgroundColor: category.color }}
-                        />
-                        <h4 className="font-medium">{category.name}</h4>
-                        <Badge variant="outline">
-                          {category.ticket_count || 0} tickets
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground">{category.description}</p>
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Button variant="outline" size="sm">
-                        <Edit className="h-3 w-3" />
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Trash2 className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </div>
-      )}
       </div>
-    </div>
+    </AuthGuard>
   )
 }

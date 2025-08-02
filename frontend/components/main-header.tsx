@@ -38,8 +38,8 @@ export function MainHeader() {
       case "admin":
         return [
           { name: "Admin Panel", href: "/admin" },
-          { name: "User Management", href: "/admin?tab=users" },
-          { name: "Analytics", href: "/admin?tab=analytics" },
+          { name: "User Management", href: "/admin/users" },
+          { name: "Analytics", href: "/admin/analytics" },
           { name: "All Tickets", href: "/tickets" },
         ]
       default:

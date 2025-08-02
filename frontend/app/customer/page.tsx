@@ -223,7 +223,7 @@ export default function CustomerDashboard() {
                 />
               </div>
               <Link href="/tickets">
-                <Button variant="outline" size="sm" className="border-white/30 text-white hover:bg-white/10">
+                <Button variant="outline" size="sm" className="border-white/50 text-white hover:bg-white/20 hover:text-white bg-white/10">
                   View All
                 </Button>
               </Link>
