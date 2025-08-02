@@ -17,6 +17,7 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ['role', 'is_active', 'date_joined']
     search_fields = ['username', 'email', 'first_name', 'last_name']
     ordering = ['username']
+    list_per_page = 25  # Limit items per page
     
     fieldsets = BaseUserAdmin.fieldsets + (
         ('Additional Info', {
@@ -50,6 +51,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_filter = ['is_active', 'created_at']
     search_fields = ['name', 'description']
     readonly_fields = ['created_at', 'updated_at']
+    list_per_page = 25
     
     def color_display(self, obj):
         return format_html(
@@ -59,7 +61,10 @@ class CategoryAdmin(admin.ModelAdmin):
     color_display.short_description = 'Color'
     
     def tickets_count(self, obj):
-        return obj.tickets.count()
+        try:
+            return obj.tickets.count()
+        except:
+            return 0
     tickets_count.short_description = 'Tickets'
 
 
@@ -72,6 +77,7 @@ class PriorityAdmin(admin.ModelAdmin):
     list_filter = ['name', 'level']
     ordering = ['level']
     readonly_fields = ['created_at']
+    list_per_page = 25
     
     def color_display(self, obj):
         return format_html(
@@ -81,7 +87,10 @@ class PriorityAdmin(admin.ModelAdmin):
     color_display.short_description = 'Color'
     
     def tickets_count(self, obj):
-        return obj.tickets.count()
+        try:
+            return obj.tickets.count()
+        except:
+            return 0
     tickets_count.short_description = 'Tickets'
 
 
@@ -96,6 +105,8 @@ class TicketAdmin(admin.ModelAdmin):
     search_fields = ['ticket_number', 'subject', 'description', 'created_by__username']
     readonly_fields = ['ticket_number', 'created_at', 'updated_at', 'resolved_at', 'closed_at']
     date_hierarchy = 'created_at'
+    list_per_page = 25
+    list_select_related = ['created_by', 'assigned_to', 'category', 'priority']
     
     fieldsets = (
         ('Basic Information', {
@@ -144,6 +155,8 @@ class TicketCommentAdmin(admin.ModelAdmin):
     search_fields = ['ticket__ticket_number', 'content', 'created_by__username']
     readonly_fields = ['created_at', 'updated_at']
     date_hierarchy = 'created_at'
+    list_per_page = 25
+    list_select_related = ['ticket', 'created_by']
 
 
 @admin.register(TicketAttachment)
@@ -156,6 +169,8 @@ class TicketAttachmentAdmin(admin.ModelAdmin):
     list_filter = ['content_type', 'created_at']
     search_fields = ['original_filename', 'ticket__ticket_number', 'uploaded_by__username']
     readonly_fields = ['file_size', 'content_type', 'created_at']
+    list_per_page = 25
+    list_select_related = ['ticket', 'comment', 'uploaded_by']
     
     def file_size_display(self, obj):
         """Display file size in human readable format"""

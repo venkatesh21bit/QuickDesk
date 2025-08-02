@@ -1,0 +1,1 @@
+web: python manage.py migrate && python manage.py populate_defaults && gunicorn config.wsgi --log-file -

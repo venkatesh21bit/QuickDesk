@@ -19,8 +19,9 @@ export default function SignUpPage() {
     email: "",
     username: "",
     password: "",
-    confirm_password: "",
+    password_confirm: "",
     department: "",
+    phone: "",
     role: "customer"
   })
   const [showPassword, setShowPassword] = useState(false)
@@ -33,7 +34,7 @@ export default function SignUpPage() {
     setError("")
 
     // Validation
-    if (formData.password !== formData.confirm_password) {
+    if (formData.password !== formData.password_confirm) {
       setError("Passwords do not match")
       return
     }
@@ -155,6 +156,18 @@ export default function SignUpPage() {
                 </div>
               </div>
 
+              {/* Phone */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-white">Phone Number (Optional)</label>
+                <Input
+                  type="tel"
+                  placeholder="+1 (555) 123-4567"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+                />
+              </div>
+
               {/* Department */}
               <div className="space-y-2">
                 <label className="text-sm font-medium text-white">Department</label>
@@ -228,8 +241,8 @@ export default function SignUpPage() {
                   <Input
                     type={showConfirmPassword ? "text" : "password"}
                     placeholder="Confirm your password"
-                    value={formData.confirm_password}
-                    onChange={(e) => setFormData({...formData, confirm_password: e.target.value})}
+                    value={formData.password_confirm}
+                    onChange={(e) => setFormData({...formData, password_confirm: e.target.value})}
                     className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
                     required
                   />
