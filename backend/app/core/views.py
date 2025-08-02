@@ -174,10 +174,8 @@ class TicketViewSet(ModelViewSet):
             # Customers can only see their own tickets and non-internal tickets
             queryset = queryset.filter(created_by=user, is_internal=False)
         elif user.role == 'agent':
-            # Agents can see all tickets except internal ones they didn't create
-            queryset = queryset.filter(
-                Q(is_internal=False) | Q(created_by=user) | Q(assigned_to=user)
-            )
+            # Agents can see all non-internal tickets
+            queryset = queryset.filter(is_internal=False)
         # Admins can see all tickets
         
         return queryset
@@ -217,6 +215,43 @@ class TicketViewSet(ModelViewSet):
             return Response({'message': f'Ticket assigned to {agent.username}'})
         except User.DoesNotExist:
             return Response({'error': 'Agent not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    @action(detail=True, methods=['post'])
+    def update_status(self, request, pk=None):
+        """
+        Update ticket status
+        """
+        ticket = self.get_object()
+        new_status = request.data.get('status')
+        
+        # Validate status
+        valid_statuses = [choice[0] for choice in Ticket.STATUS_CHOICES]
+        if new_status not in valid_statuses:
+            return Response({'error': 'Invalid status'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Check permissions
+        if not request.user.role in ['agent', 'admin']:
+            # Customers can only update their own tickets to specific statuses
+            if ticket.created_by != request.user:
+                return Response({'error': 'Permission denied'}, status=status.HTTP_403_FORBIDDEN)
+            
+            # Customers can only close or reopen their tickets
+            if new_status not in ['closed', 'open']:
+                return Response({'error': 'Customers can only close or reopen tickets'}, 
+                              status=status.HTTP_403_FORBIDDEN)
+        
+        # Update status
+        old_status = ticket.status
+        ticket.status = new_status
+        ticket.save()
+        
+        # Use the service to handle notifications and activity tracking
+        TicketService.update_ticket(ticket, {'status': new_status}, request.user)
+        
+        return Response({
+            'message': f'Ticket status updated from {old_status} to {new_status}',
+            'status': new_status
+        })
     
     @action(detail=True, methods=['post'])
     def vote(self, request, pk=None):
@@ -280,6 +315,38 @@ class TicketCommentViewSet(ModelViewSet):
         context = super().get_serializer_context()
         context['ticket_id'] = self.kwargs.get('ticket_pk')
         return context
+    
+    def perform_create(self, serializer):
+        """
+        Create comment and update ticket status if agent comments
+        """
+        ticket_id = self.kwargs.get('ticket_pk')
+        ticket = Ticket.objects.get(id=ticket_id)
+        
+        # Save the comment
+        comment = serializer.save(
+            ticket=ticket,
+            created_by=self.request.user
+        )
+        
+        # If an agent comments on an open ticket, change status to in_progress
+        if (self.request.user.role in ['agent', 'admin'] and 
+            ticket.status == 'open' and 
+            not comment.is_internal):
+            ticket.status = 'in_progress'
+            ticket.save()
+            
+            # Use the service to handle notifications
+            TicketService.update_ticket(ticket, {'status': 'in_progress'}, self.request.user)
+        
+        # Use the service to handle comment notifications
+        TicketService.add_comment(
+            ticket=ticket,
+            content=comment.content,
+            comment_type=comment.comment_type,
+            user=self.request.user,
+            is_internal=comment.is_internal
+        )
 
 
 # ============================================================================
@@ -327,9 +394,8 @@ class DashboardStatsView(APIView):
         if user.role == 'customer':
             base_queryset = Ticket.objects.filter(created_by=user)
         elif user.role == 'agent':
-            base_queryset = Ticket.objects.filter(
-                Q(assigned_to=user) | Q(created_by=user) | Q(is_internal=False)
-            )
+            # Agents see all non-internal tickets for stats
+            base_queryset = Ticket.objects.filter(is_internal=False)
         else:  # admin
             base_queryset = Ticket.objects.all()
         
@@ -354,7 +420,9 @@ class DashboardStatsView(APIView):
         if user.role == 'customer':
             stats['my_tickets'] = total_tickets
         elif user.role == 'agent':
-            stats['assigned_tickets'] = Ticket.objects.filter(assigned_to=user).count()
+            # For agents, also show assigned and unassigned tickets
+            stats['assigned_tickets'] = base_queryset.filter(assigned_to=user).count()
+            stats['unassigned_tickets'] = base_queryset.filter(assigned_to__isnull=True).count()
             stats['my_tickets'] = Ticket.objects.filter(created_by=user).count()
         
         # Performance metrics for agents and admins

@@ -8,6 +8,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { 
   Ticket, 
   Users, 
@@ -21,7 +27,12 @@ import {
   Filter,
   Bell,
   Star,
-  Loader2
+  Loader2,
+  ChevronDown,
+  Play,
+  Pause,
+  CheckCircle2,
+  XCircle
 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { api } from "@/lib/api"
@@ -82,17 +93,16 @@ export default function AgentDashboard() {
   const loadDashboardData = async () => {
     setLoading(true)
     try {
-      const [dashboardData, assignedTickets] = await Promise.all([
+      const [dashboardData, allTickets] = await Promise.all([
         api.getDashboardStats(),
         api.getTickets(new URLSearchParams({ 
-          assigned_to: user?.id?.toString() || '',
           ordering: '-priority__level,-created_at',
-          page_size: '20'
+          page_size: '50'
         }))
       ])
       
       setStats(dashboardData)
-      setTickets(assignedTickets.results || assignedTickets)
+      setTickets(allTickets.results || allTickets)
     } catch (error) {
       console.error("Failed to load dashboard data:", error)
     } finally {
@@ -107,6 +117,16 @@ export default function AgentDashboard() {
       loadDashboardData()
     } catch (error) {
       console.error("Failed to assign ticket:", error)
+    }
+  }
+
+  const handleStatusUpdate = async (ticketId: string, newStatus: string) => {
+    try {
+      await api.updateTicketStatus(ticketId, newStatus)
+      // Reload tickets after status update
+      loadDashboardData()
+    } catch (error) {
+      console.error("Failed to update ticket status:", error)
     }
   }
 
@@ -251,7 +271,7 @@ export default function AgentDashboard() {
       {/* Filters and Search */}
       <Card className="backdrop-blur-md bg-[#0f2027]/80 border-white/20 shadow-xl">
         <CardHeader>
-          <CardTitle className="text-white">My Tickets</CardTitle>
+          <CardTitle className="text-white">All Tickets</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Search */}
@@ -355,6 +375,55 @@ export default function AgentDashboard() {
                           View Details
                         </Button>
                       </Link>
+                      
+                      {/* Status Update Dropdown */}
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            className="border-white/30 text-white hover:bg-white/10"
+                          >
+                            <ChevronDown className="h-4 w-4 mr-1" />
+                            Update Status
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="bg-white">
+                          <DropdownMenuItem 
+                            onClick={() => handleStatusUpdate(ticket.id, 'in_progress')}
+                            disabled={ticket.status === 'in_progress'}
+                            className="cursor-pointer"
+                          >
+                            <Play className="h-4 w-4 mr-2" />
+                            In Progress
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            onClick={() => handleStatusUpdate(ticket.id, 'resolved')}
+                            disabled={ticket.status === 'resolved'}
+                            className="cursor-pointer"
+                          >
+                            <CheckCircle2 className="h-4 w-4 mr-2" />
+                            Resolved
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            onClick={() => handleStatusUpdate(ticket.id, 'closed')}
+                            disabled={ticket.status === 'closed'}
+                            className="cursor-pointer"
+                          >
+                            <XCircle className="h-4 w-4 mr-2" />
+                            Closed
+                          </DropdownMenuItem>
+                          <DropdownMenuItem 
+                            onClick={() => handleStatusUpdate(ticket.id, 'open')}
+                            disabled={ticket.status === 'open'}
+                            className="cursor-pointer"
+                          >
+                            <AlertTriangle className="h-4 w-4 mr-2" />
+                            Reopen
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                      
                       {!ticket.assigned_to_username && (
                         <Button 
                           size="sm" 
@@ -379,7 +448,7 @@ export default function AgentDashboard() {
               <p className="text-white/70">
                 {searchTerm || statusFilter !== "all" || priorityFilter !== "all" 
                   ? "No tickets match your current filters." 
-                  : "You don't have any assigned tickets yet."}
+                  : "No tickets are currently available."}
               </p>
             </CardContent>
           </Card>
