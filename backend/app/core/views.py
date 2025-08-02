@@ -491,6 +491,80 @@ class UserManagementViewSet(ModelViewSet):
         return Response({'message': f'User role changed to {new_role}'})
 
 
+class AdminStatsView(APIView):
+    """
+    Admin-specific statistics endpoint
+    """
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    
+    def get(self, request):
+        """
+        Get comprehensive admin statistics
+        """
+        # User statistics
+        total_users = User.objects.count()
+        active_agents = User.objects.filter(role='agent', is_active=True).count()
+        customers = User.objects.filter(role='customer').count()
+        total_agents = User.objects.filter(role='agent').count()
+        
+        # Ticket statistics
+        total_tickets = Ticket.objects.count()
+        open_tickets = Ticket.objects.filter(status='open').count()
+        in_progress_tickets = Ticket.objects.filter(status='in_progress').count()
+        resolved_tickets = Ticket.objects.filter(status='resolved').count()
+        closed_tickets = Ticket.objects.filter(status='closed').count()
+        
+        # Category statistics
+        total_categories = Category.objects.filter(is_active=True).count()
+        
+        # Performance metrics
+        recent_tickets = Ticket.objects.filter(
+            resolved_at__isnull=False,
+            created_at__gte=timezone.now() - timedelta(days=30)
+        )
+        
+        avg_resolution_time = "0h"
+        satisfaction_rate = "100%"
+        
+        if recent_tickets.exists():
+            # Calculate average resolution time in hours
+            total_resolution_time = sum([
+                (ticket.resolved_at - ticket.created_at).total_seconds() / 3600
+                for ticket in recent_tickets
+                if ticket.resolved_at
+            ])
+            if total_resolution_time > 0:
+                avg_hours = total_resolution_time / recent_tickets.count()
+                avg_resolution_time = f"{avg_hours:.1f}h"
+        
+        # Weekly statistics
+        week_ago = timezone.now() - timedelta(days=7)
+        tickets_this_week = Ticket.objects.filter(created_at__gte=week_ago).count()
+        resolved_this_week = Ticket.objects.filter(
+            resolved_at__gte=week_ago,
+            resolved_at__isnull=False
+        ).count()
+        
+        stats = {
+            'total_users': total_users,
+            'total_tickets': total_tickets,
+            'active_agents': active_agents,
+            'total_categories': total_categories,
+            'avg_resolution_time': avg_resolution_time,
+            'satisfaction_rate': satisfaction_rate,
+            'open_tickets': open_tickets,
+            'in_progress_tickets': in_progress_tickets,
+            'resolved_tickets': resolved_tickets,
+            'closed_tickets': closed_tickets,
+            'customers': customers,
+            'total_agents': total_agents,
+            'tickets_this_week': tickets_this_week,
+            'resolved_this_week': resolved_this_week,
+        }
+        
+        return Response(stats)
+
+
 # ============================================================================
 # Notification Views
 # ============================================================================
